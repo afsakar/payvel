@@ -55,11 +55,11 @@ class Invoice extends Model
     {
         if ($this->items->isEmpty()) {
             $sum = $this->waybill->items->sum(function ($item) {
-                return $item->quantity * $item->price;
+                return $item->quantity * $item->material->price;
             });
 
             $totalTax = $this->waybill->items->sum(function ($item) {
-                return $item->quantity * $item->price * $item->tax_rate / 100;
+                return $item->quantity * $item->material->price * $item->tax_rate / 100;
             });
 
             return $total = $sum + $totalTax - $this->discount - ($totalTax * $this->with_holding->rate / 100);
@@ -67,11 +67,11 @@ class Invoice extends Model
 
 
             $sum = $this->items->sum(function ($item) {
-                return $item->quantity * $item->price;
+                return $item->quantity * $item->material->price;
             });
 
             $totalTax = $this->items->sum(function ($item) {
-                return $item->quantity * $item->price * $item->tax_rate / 100;
+                return $item->quantity * $item->material->price * $item->tax_rate / 100;
             });
 
             $total = $sum + $totalTax - $this->discount - ($totalTax * $this->with_holding->rate / 100);

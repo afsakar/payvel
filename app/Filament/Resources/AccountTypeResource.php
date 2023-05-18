@@ -18,7 +18,7 @@ class AccountTypeResource extends Resource
 {
     protected static ?string $model = AccountType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-menu-alt-2';
 
     public static function form(Form $form): Form
     {

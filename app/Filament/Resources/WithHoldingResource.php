@@ -18,7 +18,7 @@ class WithHoldingResource extends Resource
 {
     protected static ?string $model = WithHolding::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-receipt-refund';
 
     public static function form(Form $form): Form
     {

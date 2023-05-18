@@ -20,7 +20,7 @@ class AccountResource extends Resource
 {
     protected static ?string $model = Account::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-cash';
 
     public static function form(Form $form): Form
     {
@@ -58,7 +58,8 @@ class AccountResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('accountType.name'),
                 Tables\Columns\TextColumn::make('currency.code'),
                 Tables\Columns\TextColumn::make('starting_balance'),

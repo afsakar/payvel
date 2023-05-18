@@ -18,7 +18,7 @@ class TaxResource extends Resource
 {
     protected static ?string $model = Tax::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-receipt-tax';
 
     public static function form(Form $form): Form
     {

@@ -23,7 +23,7 @@ class WaybillResource extends Resource
 {
     protected static ?string $model = Waybill::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-document';
 
     public static function form(Form $form): Form
     {

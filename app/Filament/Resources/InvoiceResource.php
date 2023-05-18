@@ -26,7 +26,7 @@ class InvoiceResource extends Resource
 {
     protected static ?string $model = Invoice::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     public ?Model $record = null;
 
@@ -129,6 +129,9 @@ class InvoiceResource extends Resource
                                     ->disabled()
                             ])
                         ])
+                        ->disabled(function (Closure $get) {
+                            return $get('corporation_id') === null;
+                        })
                         ->hidden(function (Closure $get) {
                             return $get('waybill_id') !== null;
                         })

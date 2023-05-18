@@ -19,7 +19,7 @@ class CorporationResource extends Resource
 {
     protected static ?string $model = Corporation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
     public static function form(Form $form): Form
     {
@@ -67,13 +67,16 @@ class CorporationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('currency.name'),
                 Tables\Columns\TextColumn::make('tel_number')
                     ->placeholder('-'),
                 Tables\Columns\TextColumn::make('tax_office')
+                    ->searchable()
                     ->placeholder('-'),
                 Tables\Columns\TextColumn::make('tax_number')
+                    ->searchable()
                     ->placeholder('-'),
                 Tables\Columns\BadgeColumn::make('type')
                     ->enum([
@@ -82,7 +85,7 @@ class CorporationResource extends Resource
                     ])
                     ->colors([
                         'primary',
-                        'info' => 'vendor',
+                        'success' => 'vendor',
                     ]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y'),
