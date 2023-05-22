@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MaterialResource extends Resource
@@ -79,12 +80,19 @@ class MaterialResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('code'),
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('code')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('unit.name'),
                 Tables\Columns\TextColumn::make('tax.rate'),
                 Tables\Columns\TextColumn::make('currency.code'),
-                Tables\Columns\TextColumn::make('price'),
+                Tables\Columns\TextColumn::make('price')
+                    ->money(function (?Model $record) {
+                        return $record->currency->code;
+                    }),
                 Tables\Columns\BadgeColumn::make('category')
                     ->enum([
                         'construction' => 'Construction',

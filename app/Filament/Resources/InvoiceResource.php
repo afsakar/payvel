@@ -6,8 +6,10 @@ use Akaunting\Money\View\Components\Money;
 use App\Filament\Resources\InvoiceResource\Pages;
 use App\Filament\Resources\InvoiceResource\RelationManagers;
 use App\Models\Company;
+use App\Models\Corporation;
 use App\Models\Invoice;
 use App\Models\Material;
+use App\Models\Revenue;
 use App\Models\Waybill;
 use Closure;
 use Filament\Forms;
@@ -27,6 +29,8 @@ class InvoiceResource extends Resource
     protected static ?string $model = Invoice::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    protected static ?string $recordTitleAttribute = 'number';
 
     public ?Model $record = null;
 
@@ -51,6 +55,7 @@ class InvoiceResource extends Resource
                         ->required(),
                     Forms\Components\Select::make('corporation_id')
                         ->label('Corporation')
+                        ->reactive()
                         ->options(\App\Models\Corporation::all()->pluck('name', 'id'))
                         ->afterStateUpdated(function ($state, Closure $set, Closure $get) {
                             $set('corporation_id', $state);
@@ -69,8 +74,11 @@ class InvoiceResource extends Resource
                                 return Waybill::where('company_id', $get('company_id'))->where('corporation_id', $get('corporation_id'))->whereDoesntHave('invoices')->get()->pluck('number', 'id');
                             }
                         })
-                        ->afterStateUpdated(function ($state, Closure $set, Closure $get) {
+                        ->afterStateUpdated(function ($state, Closure $set, ?Model $record) {
                             $set('waybill_id', $state);
+                            if ($record && $state !== null) {
+                                $record->items()->delete();
+                            }
                         })
                         ->searchable()
                         ->nullable(),
@@ -132,12 +140,64 @@ class InvoiceResource extends Resource
                         ->disabled(function (Closure $get) {
                             return $get('corporation_id') === null;
                         })
-                        ->hidden(function (Closure $get) {
-                            return $get('waybill_id') !== null;
-                        })
                         ->defaultItems(0)
                         ->createItemButtonLabel('Add Invoice Item')
                 ])
+                    ->hidden(function (Closure $get) {
+                        return $get('waybill_id') !== null;
+                    }),
+                Card::make()->columns(1)->schema([
+                    Forms\Components\Repeater::make('payments')
+                        ->relationship()->schema([
+                            Grid::make(3)->schema([
+                                Forms\Components\TextInput::make('company_id')
+                                    ->label('Company')
+                                    ->disabled()
+                                    ->reactive()
+                                    ->default(function (Closure $get, ?Model $record) {
+                                        if ($record && $record->company_id) {
+                                            return Company::query()->find($record->company_id)->name;
+                                        } else {
+                                            return Company::query()->find($get('../../company_id'))->name;
+                                        }
+                                    }),
+                                Forms\Components\TextInput::make('corporation_id')
+                                    ->label('Corporation')
+                                    ->disabled()
+                                    ->reactive()
+                                    ->default(function (Closure $get, ?Model $record) {
+                                        if ($record && $record->corporation_id) {
+                                            return Corporation::query()->find($record->corporation_id)->name;
+                                        } else {
+                                            return Corporation::query()->find($get('../../corporation_id'))->name;
+                                        }
+                                    }),
+                                Forms\Components\Select::make('revenue_id')
+                                    ->label('Revenue')
+                                    ->reactive()
+                                    ->searchable()
+                                    ->options(function (?Model $record, Closure $get) {
+                                        if ($record && $record->revenue->company_id && $record->revenue->company_id) {
+                                            $revenues = Revenue::query()->where([
+                                                'company_id' => $record->revenue->company_id,
+                                                'corporation_id' => $record->revenue->corporation_id,
+                                            ])->whereDoesntHave('invoices')->pluck('amount', 'id');
+
+                                            return $revenues->put($record->revenue_id, $record->revenue->amount);
+                                        }
+                                        return Revenue::query()->where([
+                                            'company_id' => $get('../../company_id'),
+                                            'corporation_id' => $get('../../corporation_id'),
+                                        ])->whereDoesntHave('invoices')->pluck('amount', 'id');
+                                    })
+                                    ->required(),
+                            ])
+                        ])
+                        ->disabled(function (Closure $get) {
+                            return $get('corporation_id') === null && $get('company_id') === null;
+                        })
+                        ->defaultItems(0)
+                ]),
             ]);
     }
 
@@ -170,16 +230,15 @@ class InvoiceResource extends Resource
                         'success' => 'delivered',
                         'danger' => 'cancelled',
                     ]),
-                Tables\Columns\TextColumn::make('discount')
-                    ->money(function ($record) {
-                        return $record->corporation->currency->code;
-                    }, true),
+                Tables\Columns\TextColumn::make('discount'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('total')
-                    ->money(function ($record) {
-                        return $record->corporation->currency->code;
-                    }, true)
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('invoice_payments_sum')
+                    ->label('Payments')
                     ->searchable()
                     ->sortable(),
             ])

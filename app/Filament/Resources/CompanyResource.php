@@ -37,6 +37,7 @@ class CompanyResource extends Resource
                     'sm' => 2,
                 ])->schema([
                     Forms\Components\TextInput::make('name')
+                        ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('owner')
@@ -65,6 +66,7 @@ class CompanyResource extends Resource
                     Forms\Components\TextInput::make('tax_office')
                         ->maxLength(255),
                     Forms\Components\TextInput::make('tax_number')
+                        ->unique(ignoreRecord: true)
                         ->maxLength(255),
                 ]),
             ]);

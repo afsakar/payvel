@@ -26,6 +26,10 @@ class Invoice extends Model
         'issue_date' => 'date',
     ];
 
+    protected $appends = [
+        'invoice_payments_sum',
+    ];
+
     public function company()
     {
         return $this->belongsTo(Company::class);
@@ -51,6 +55,24 @@ class Invoice extends Model
         return $this->hasMany(InvoiceItem::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(InvoicePayment::class);
+    }
+
+    public function getInvoicePaymentsSumAttribute()
+    {
+        $revenues = $this->payments->pluck('revenue_id')->toArray();
+
+        $sum = 0;
+
+        foreach ($revenues as $revenue) {
+            $sum += Revenue::find($revenue)->amount;
+        }
+
+        return $sum;
+    }
+
     public function getTotalAttribute()
     {
         if ($this->items->isEmpty()) {
@@ -62,9 +84,8 @@ class Invoice extends Model
                 return $item->quantity * $item->material->price * $item->tax_rate / 100;
             });
 
-            return $total = $sum + $totalTax - $this->discount - ($totalTax * $this->with_holding->rate / 100);
+            return $sum + $totalTax - $this->discount - ($totalTax * $this->with_holding->rate / 100);
         } else {
-
 
             $sum = $this->items->sum(function ($item) {
                 return $item->quantity * $item->material->price;
@@ -74,11 +95,7 @@ class Invoice extends Model
                 return $item->quantity * $item->material->price * $item->tax_rate / 100;
             });
 
-            $total = $sum + $totalTax - $this->discount - ($totalTax * $this->with_holding->rate / 100);
-
-            $totalWithCurrency = $this->corporation->currency->position == "before" ? $this->corporation->currency->symbol . ' ' . number_format($total, 2) : number_format($total, 2) . ' ' . $this->corporation->currency->symbol;
-
-            return $total;
+            return $sum + $totalTax - $this->discount - ($totalTax * $this->with_holding->rate / 100);
         }
     }
 }

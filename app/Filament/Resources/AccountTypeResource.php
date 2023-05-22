@@ -26,6 +26,7 @@ class AccountTypeResource extends Resource
             ->schema([
                 Grid::make(1)->schema([
                     Forms\Components\TextInput::make('name')
+                        ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255)
                 ]),

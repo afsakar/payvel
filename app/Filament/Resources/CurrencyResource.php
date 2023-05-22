@@ -27,9 +27,11 @@ class CurrencyResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('code')
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(3),
                 Forms\Components\TextInput::make('symbol')
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(3),
                 Forms\Components\Select::make('position')

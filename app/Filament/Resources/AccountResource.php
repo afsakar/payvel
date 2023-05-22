@@ -41,6 +41,7 @@ class AccountResource extends Resource
                         ->searchable()
                         ->required(),
                     Forms\Components\TextInput::make('name')
+                        ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('starting_balance')
@@ -62,7 +63,7 @@ class AccountResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('accountType.name'),
                 Tables\Columns\TextColumn::make('currency.code'),
-                Tables\Columns\TextColumn::make('starting_balance'),
+                Tables\Columns\TextColumn::make('balance'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y'),
             ])

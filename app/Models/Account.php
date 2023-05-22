@@ -18,6 +18,10 @@ class Account extends Model
         'starting_balance',
     ];
 
+    protected $appends = [
+        'balance',
+    ];
+
     public function accountType()
     {
         return $this->belongsTo(AccountType::class);
@@ -26,5 +30,15 @@ class Account extends Model
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    public function revenues()
+    {
+        return $this->hasMany(Revenue::class);
+    }
+
+    public function getBalanceAttribute()
+    {
+        return $this->starting_balance + $this->revenues()->sum('amount');
     }
 }

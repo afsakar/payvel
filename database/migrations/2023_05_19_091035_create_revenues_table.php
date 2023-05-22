@@ -11,19 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('waybills', function (Blueprint $table) {
+        Schema::create('revenues', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('account_id');
             $table->unsignedBigInteger('company_id');
-            $table->unsignedBigInteger('corporation_id');
-            $table->string('number')->unique();
-            $table->text('address');
-            $table->string('status');
-            $table->timestamp('due_date')->nullable();
-            $table->timestamp('waybill_date')->nullable();
-            $table->text('content')->nullable();
+            $table->unsignedBigInteger('corporation_id')->default(0);
+            $table->unsignedBigInteger('category_id');
+            $table->text('description');
+            $table->decimal('amount', 15, 2);
+            $table->string('type');
+            $table->timestamp('due_at')->nullable();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete(null);
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete(null);
             $table->foreign('company_id')->references('id')->on('companies')->onDelete(null);
             $table->foreign('corporation_id')->references('id')->on('corporations')->onDelete(null);
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('waybills');
+        Schema::dropIfExists('revenues');
     }
 };

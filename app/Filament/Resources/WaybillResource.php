@@ -25,6 +25,8 @@ class WaybillResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document';
 
+    protected static ?string $recordTitleAttribute = 'number';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -75,7 +77,7 @@ class WaybillResource extends Resource
                             'attachFiles',
                             'codeBlock',
                         ])
-                        ->required()
+                        ->nullable()
                         ->maxLength(65535),
                 ]),
                 Card::make()->columns(1)->schema([
