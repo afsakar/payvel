@@ -46,13 +46,11 @@ class InvoiceResource extends Resource
                     Forms\Components\DatePicker::make('issue_date')->displayFormat('d/m/Y'),
                     Forms\Components\Select::make('company_id')
                         ->label('Company')
-                        ->options(Company::all()->pluck('name', 'id'))
                         ->reactive()
-                        ->afterStateUpdated(function ($state, Closure $set) {
-                            $set('company_id', $state);
-                        })
+                        ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
                         ->searchable()
-                        ->required(),
+                        ->default(session()->get('company_id'))
+                        ->disabled(),
                     Forms\Components\Select::make('corporation_id')
                         ->label('Corporation')
                         ->reactive()
@@ -137,6 +135,7 @@ class InvoiceResource extends Resource
                                     ->disabled()
                             ])
                         ])
+                        ->requiredWithoutAll('waybill_id')
                         ->disabled(function (Closure $get) {
                             return $get('corporation_id') === null;
                         })
@@ -150,17 +149,13 @@ class InvoiceResource extends Resource
                     Forms\Components\Repeater::make('payments')
                         ->relationship()->schema([
                             Grid::make(3)->schema([
-                                Forms\Components\TextInput::make('company_id')
+                                Forms\Components\Select::make('company_id')
                                     ->label('Company')
-                                    ->disabled()
                                     ->reactive()
-                                    ->default(function (Closure $get, ?Model $record) {
-                                        if ($record && $record->company_id) {
-                                            return Company::query()->find($record->company_id)->name;
-                                        } else {
-                                            return Company::query()->find($get('../../company_id'))->name;
-                                        }
-                                    }),
+                                    ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
+                                    ->searchable()
+                                    ->default(session()->get('company_id'))
+                                    ->disabled(),
                                 Forms\Components\TextInput::make('corporation_id')
                                     ->label('Corporation')
                                     ->disabled()
@@ -277,6 +272,6 @@ class InvoiceResource extends Resource
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
-            ]);
+            ])->where('company_id', session()->get('company_id'));
     }
 }

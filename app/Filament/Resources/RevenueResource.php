@@ -40,13 +40,10 @@ class RevenueResource extends Resource
                 Forms\Components\Select::make('company_id')
                     ->label('Company')
                     ->reactive()
-                    ->options(Company::query()->get()->pluck('name', 'id'))
-                    ->afterStateUpdated(function ($state, Closure $set) {
-                        $set('company_id', $state);
-                    })
-                    ->placeholder('Select Company')
+                    ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
                     ->searchable()
-                    ->required(),
+                    ->default(session()->get('company_id'))
+                    ->disabled(),
                 Forms\Components\Select::make('corporation_id')
                     ->label('Corporation')
                     ->reactive()
@@ -155,5 +152,10 @@ class RevenueResource extends Resource
         return [
             'index' => Pages\ManageRevenues::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('company_id', session()->get('company_id'));
     }
 }

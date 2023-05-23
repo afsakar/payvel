@@ -44,9 +44,11 @@ class AgreementResource extends Resource
                         ]),
                         Forms\Components\Select::make('company_id')
                             ->label('Company')
-                            ->options(\App\Models\Company::all()->pluck('name', 'id'))
+                            ->reactive()
+                            ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
                             ->searchable()
-                            ->required(),
+                            ->default(session()->get('company_id'))
+                            ->disabled(),
                         Forms\Components\Select::make('corporation_id')
                             ->label('Corporation')
                             ->options(\App\Models\Corporation::all()->pluck('name', 'id'))
@@ -115,6 +117,6 @@ class AgreementResource extends Resource
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
-            ]);
+            ])->where('company_id', session()->get('company_id'));
     }
 }

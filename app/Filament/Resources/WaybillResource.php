@@ -34,12 +34,11 @@ class WaybillResource extends Resource
                 Card::make()->columns(2)->schema([
                     Forms\Components\Select::make('company_id')
                         ->label('Company')
-                        ->options(Company::all()->pluck('name', 'id'))
-                        ->afterStateUpdated(function ($state, $set) {
-                            $set('company', $state);
-                        })
+                        ->reactive()
+                        ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
                         ->searchable()
-                        ->required(),
+                        ->default(session()->get('company_id'))
+                        ->disabled(),
                     Forms\Components\Select::make('corporation_id')
                         ->label('Corporation')
                         ->options(\App\Models\Corporation::all()->pluck('name', 'id'))
@@ -183,6 +182,6 @@ class WaybillResource extends Resource
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
-            ]);
+            ])->where('company_id', session()->get('company_id'));
     }
 }
