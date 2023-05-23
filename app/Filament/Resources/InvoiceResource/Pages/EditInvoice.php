@@ -14,9 +14,13 @@ class EditInvoice extends EditRecord
     {
         return [
             Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->hidden(fn ($record) => $record->has_any_relation),
             Actions\ForceDeleteAction::make(),
             Actions\RestoreAction::make(),
+            Actions\Action::make('Go Back')
+                ->icon('heroicon-o-arrow-left')
+                ->url(route('filament.resources.invoices.index'))
         ];
     }
 }

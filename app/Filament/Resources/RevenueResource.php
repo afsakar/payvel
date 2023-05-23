@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\InvoiceResource\Pages\ViewInvoice;
 use App\Filament\Resources\RevenueResource\Pages;
 use App\Filament\Resources\RevenueResource\RelationManagers;
 use App\Filament\Resources\RevenueResource\Widgets\RevenueWidget;
@@ -20,6 +21,7 @@ use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Routing\Route;
 
 class RevenueResource extends Resource
 {
@@ -106,6 +108,8 @@ class RevenueResource extends Resource
                     ->sortable()
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('amount'),
+                Tables\Columns\TextColumn::make('invoice_number')
+                    ->label('Invoice Number'),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->limit(50),
@@ -131,13 +135,10 @@ class RevenueResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->hidden(function ($record) {
-                    return $record->invoices()->count() > 0;
-                }),
+                Tables\Actions\DeleteAction::make()
+                    ->hidden(fn ($record) => $record->has_any_relation)
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getWidgets(): array

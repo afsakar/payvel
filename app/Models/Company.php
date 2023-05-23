@@ -23,6 +23,10 @@ class Company extends Model
         'logo',
     ];
 
+    protected $appends = [
+        'has_any_relation',
+    ];
+
     public function agreements()
     {
         return $this->hasMany(Agreement::class);
@@ -41,5 +45,15 @@ class Company extends Model
     public function bills()
     {
         return $this->hasMany(Bill::class);
+    }
+
+    public function revenues()
+    {
+        return $this->hasMany(Revenue::class);
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->agreements->count() > 0 || $this->waybills->count() > 0 || $this->invoices->count() > 0 || $this->bills->count() > 0 || $this->revenues->count() > 0;
     }
 }

@@ -24,8 +24,22 @@ class Corporation extends Model
         'type',
     ];
 
+    protected $appends = [
+        'has_any_relation',
+    ];
+
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    public function agreements()
+    {
+        return $this->hasMany(Agreement::class);
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->agreements()->count() > 0;
     }
 }

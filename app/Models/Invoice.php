@@ -28,6 +28,7 @@ class Invoice extends Model
 
     protected $appends = [
         'invoice_payments_sum',
+        'has_any_relation',
     ];
 
     public function company()
@@ -97,5 +98,10 @@ class Invoice extends Model
 
             return $sum + $totalTax - $this->discount - ($totalTax * $this->with_holding->rate / 100);
         }
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->payments->count() > 0 || $this->items->count() > 0;
     }
 }

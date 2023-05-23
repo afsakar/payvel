@@ -24,6 +24,10 @@ class Agreement extends Model implements HasMedia
         'date' => 'date'
     ];
 
+    protected $appends = [
+        'has_any_relation'
+    ];
+
     public function company()
     {
         return $this->belongsTo(Company::class);
@@ -38,5 +42,10 @@ class Agreement extends Model implements HasMedia
     {
         $this->addMediaCollection('agreement')
             ->singleFile();
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->company()->exists();
     }
 }

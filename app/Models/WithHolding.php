@@ -14,4 +14,18 @@ class WithHolding extends Model
         'name',
         'rate',
     ];
+
+    protected $appends = [
+        'has_any_relation'
+    ];
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->invoices()->count() > 0;
+    }
 }

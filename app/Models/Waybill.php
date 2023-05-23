@@ -26,6 +26,10 @@ class Waybill extends Model
         'waybill_date' => 'date',
     ];
 
+    protected $appends = [
+        'has_any_relation',
+    ];
+
     public function company()
     {
         return $this->belongsTo(Company::class);
@@ -44,5 +48,10 @@ class Waybill extends Model
     public function invoices()
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->items()->count() > 0 || $this->invoices()->count() > 0;
     }
 }

@@ -148,25 +148,27 @@ class InvoiceResource extends Resource
                 Card::make()->columns(1)->schema([
                     Forms\Components\Repeater::make('payments')
                         ->relationship()->schema([
-                            Grid::make(3)->schema([
+                            Grid::make(1)->schema([
                                 Forms\Components\Select::make('company_id')
                                     ->label('Company')
                                     ->reactive()
                                     ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
                                     ->searchable()
                                     ->default(session()->get('company_id'))
-                                    ->disabled(),
-                                Forms\Components\TextInput::make('corporation_id')
+                                    ->disabled()
+                                    ->hidden(),
+                                Forms\Components\Select::make('corporation_id')
                                     ->label('Corporation')
                                     ->disabled()
+                                    ->options(\App\Models\Corporation::query()->pluck('name', 'id'))
                                     ->reactive()
                                     ->default(function (Closure $get, ?Model $record) {
                                         if ($record && $record->corporation_id) {
-                                            return Corporation::query()->find($record->corporation_id)->name;
+                                            return Corporation::query()->find($record->corporation_id)->id;
                                         } else {
-                                            return Corporation::query()->find($get('../../corporation_id'))->name;
+                                            return Corporation::query()->find($get('../../corporation_id'))->id;
                                         }
-                                    }),
+                                    })->hidden(),
                                 Forms\Components\Select::make('revenue_id')
                                     ->label('Revenue')
                                     ->reactive()
@@ -189,7 +191,7 @@ class InvoiceResource extends Resource
                             ])
                         ])
                         ->disabled(function (Closure $get) {
-                            return $get('corporation_id') === null && $get('company_id') === null;
+                            return $get('corporation_id') === null;
                         })
                         ->defaultItems(0)
                 ]),
@@ -231,7 +233,6 @@ class InvoiceResource extends Resource
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('total')
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('invoice_payments_sum')
                     ->label('Payments')
                     ->sortable(),
@@ -243,11 +244,7 @@ class InvoiceResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array

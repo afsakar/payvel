@@ -22,6 +22,11 @@ class Material extends Model
         'type',
     ];
 
+    protected $appends = [
+        'has_any_relation',
+    ];
+
+
     public function unit()
     {
         return $this->belongsTo(Unit::class);
@@ -35,5 +40,20 @@ class Material extends Model
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    public function invoiceItems()
+    {
+        return $this->hasMany(InvoiceItem::class);
+    }
+
+    public function waybillItems()
+    {
+        return $this->hasMany(WaybillItem::class);
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->invoiceItems()->count() > 0 || $this->waybillItems()->count() > 0;
     }
 }

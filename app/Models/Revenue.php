@@ -24,6 +24,11 @@ class Revenue extends Model
         'due_at' => 'date'
     ];
 
+    protected $appends = [
+        'has_any_relation',
+        'invoice_number'
+    ];
+
     public function account()
     {
         return $this->belongsTo(Account::class);
@@ -47,5 +52,15 @@ class Revenue extends Model
     public function invoices()
     {
         return $this->belongsToMany(Invoice::class, 'invoice_payments');
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->invoices()->count() > 0;
+    }
+
+    public function getInvoiceNumberAttribute()
+    {
+        return $this->invoices()->first()->number ?? null;
     }
 }

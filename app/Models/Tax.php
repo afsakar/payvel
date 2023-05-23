@@ -14,4 +14,18 @@ class Tax extends Model
         'name',
         'rate',
     ];
+
+    protected $appends = [
+        'has_any_relation'
+    ];
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class);
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->materials()->count() > 0;
+    }
 }

@@ -16,4 +16,19 @@ class Currency extends Model
         'symbol',
         'position',
     ];
+
+    public function corporations()
+    {
+        return $this->hasMany(Corporation::class);
+    }
+
+    public function accounts()
+    {
+        return $this->hasMany(Account::class);
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->corporations->count() > 0 || $this->accounts->count() > 0;
+    }
 }

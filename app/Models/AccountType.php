@@ -13,4 +13,18 @@ class AccountType extends Model
     protected $fillable = [
         'name',
     ];
+
+    protected $appends = [
+        'has_any_relation',
+    ];
+
+    public function accounts()
+    {
+        return $this->hasMany(Account::class);
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->accounts->count() > 0;
+    }
 }

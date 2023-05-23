@@ -13,7 +13,11 @@ class ViewInvoice extends ViewRecord
     protected function getActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\EditAction::make()
+                ->color('secondary'),
+            Actions\Action::make('Go Back')
+                ->icon('heroicon-o-arrow-left')
+                ->url(route('filament.resources.invoices.index'))
         ];
     }
 }

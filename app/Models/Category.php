@@ -14,4 +14,18 @@ class Category extends Model
         'name',
         'type',
     ];
+
+    protected $appends = [
+        'has_any_relation',
+    ];
+
+    public function revenues()
+    {
+        return $this->hasMany(Revenue::class);
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->revenues->count() > 0;
+    }
 }

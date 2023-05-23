@@ -20,6 +20,7 @@ class Account extends Model
 
     protected $appends = [
         'balance',
+        'has_any_relation',
     ];
 
     public function accountType()
@@ -40,5 +41,10 @@ class Account extends Model
     public function getBalanceAttribute()
     {
         return $this->starting_balance + $this->revenues()->sum('amount');
+    }
+
+    public function getHasAnyRelationAttribute()
+    {
+        return $this->revenues()->count() > 0;
     }
 }
