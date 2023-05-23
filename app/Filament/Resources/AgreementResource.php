@@ -36,9 +36,12 @@ class AgreementResource extends Resource
                             ->maxLength(65535),
                     ]),
                     Card::make()->columns(1)->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
+                        Grid::make(2)->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                                ->maxLength(255),
+                            Forms\Components\DatePicker::make('date')->displayFormat('d/m/Y'),
+                        ]),
                         Forms\Components\Select::make('company_id')
                             ->label('Company')
                             ->options(\App\Models\Company::all()->pluck('name', 'id'))
@@ -67,6 +70,9 @@ class AgreementResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('date')
+                    ->sortable()
+                    ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('company.name'),
                 Tables\Columns\TextColumn::make('corporation.name'),
                 Tables\Columns\TextColumn::make('name'),

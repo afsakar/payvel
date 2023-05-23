@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Livewire\CompanySelect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +29,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::get('company-select', CompanySelect::class)->name('company.select');
+
+Route::get('change-company', function () {
+    session()->pull('company_id');
+    return redirect()->route('company.select');
+})->name('company.change');
+
+require __DIR__ . '/auth.php';

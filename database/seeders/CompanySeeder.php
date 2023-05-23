@@ -22,9 +22,9 @@ class CompanySeeder extends Seeder
         ]);
 
         \App\Models\Company::insert([
-            'name' => 'AFS Yazılım',
-            'owner' => 'Azad Furkan ŞAKAR',
-            'tel_number' => '5393842740',
+            'name' => 'Madalyon Mühendislik İnşaat',
+            'owner' => 'Mehmet Ali ORUÇ',
+            'tel_number' => '4122245630',
         ]);
     }
 }

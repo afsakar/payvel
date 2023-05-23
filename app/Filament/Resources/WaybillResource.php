@@ -121,9 +121,12 @@ class WaybillResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('number'),
-                Tables\Columns\TextColumn::make('company.name'),
-                Tables\Columns\TextColumn::make('corporation.name'),
+                Tables\Columns\TextColumn::make('number')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('company.name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('corporation.name')
+                    ->searchable(),
                 Tables\Columns\BadgeColumn::make('status')
                     ->enum([
                         'pending' => 'Pending',
@@ -136,8 +139,10 @@ class WaybillResource extends Resource
                         'danger' => 'cancelled',
                     ]),
                 Tables\Columns\TextColumn::make('due_date')
+                    ->sortable()
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('waybill_date')
+                    ->sortable()
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y'),

@@ -206,6 +206,7 @@ class InvoiceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('issue_date')
+                    ->sortable()
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('number'),
                 Tables\Columns\TextColumn::make('company.name')
@@ -234,12 +235,10 @@ class InvoiceResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('total')
-                    ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('invoice_payments_sum')
                     ->label('Payments')
-                    ->searchable()
                     ->sortable(),
             ])
             ->filters([

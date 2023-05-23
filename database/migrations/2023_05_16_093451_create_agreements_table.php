@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('corporation_id');
             $table->string('name');
             $table->text('content')->nullable();
+            $table->timestamp('date')->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete(null);
             $table->foreign('corporation_id')->references('id')->on('corporations')->onDelete(null);
             $table->softDeletes();

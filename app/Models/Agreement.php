@@ -17,6 +17,11 @@ class Agreement extends Model implements HasMedia
         'corporation_id',
         'name',
         'content',
+        'date'
+    ];
+
+    protected $casts = [
+        'date' => 'date'
     ];
 
     public function company()

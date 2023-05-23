@@ -1,6 +1,7 @@
 <?php
 
 use App\Filament\Resources\RevenueResource\Widgets\RevenueWidget;
+use App\Http\Middleware\CompanyCheck;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Http\Middleware\MirrorConfigToSubpackages;
@@ -63,7 +64,7 @@ return [
     |
     */
 
-    'home_url' => '/',
+    'home_url' => '/admin',
 
     /*
     |--------------------------------------------------------------------------
@@ -332,6 +333,7 @@ return [
             SubstituteBindings::class,
             DispatchServingFilamentEvent::class,
             MirrorConfigToSubpackages::class,
+            CompanyCheck::class
         ],
     ],
 
