@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "571af88ff59d855aec74c855de52c463",
+    "content-hash": "0a09f2476a72cce462cd629c22798c22",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -2777,6 +2777,88 @@
             "time": "2023-04-19T19:51:03+00:00"
         },
         {
+            "name": "marjose123/filament-lockscreen",
+            "version": "1.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MarJose123/filament-lockscreen.git",
+                "reference": "7e8223d6d23be7ad7bb07177669aceb7cd342b49"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MarJose123/filament-lockscreen/zipball/7e8223d6d23be7ad7bb07177669aceb7cd342b49",
+                "reference": "7e8223d6d23be7ad7bb07177669aceb7cd342b49",
+                "shasum": ""
+            },
+            "require": {
+                "danharrin/livewire-rate-limiting": "^1.0",
+                "filament/filament": "^2.0",
+                "filament/notifications": "^2.0",
+                "illuminate/contracts": "^8.0|^9.0|^10.0",
+                "php": "^8.1|^8.0",
+                "phpsa/filament-password-reveal": "^1.1",
+                "spatie/laravel-package-tools": "^1.13.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^6.0",
+                "orchestra/testbench": "^7.0",
+                "pestphp/pest": "^1.21",
+                "pestphp/pest-plugin-laravel": "^1.1",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "lockscreen\\FilamentLockscreen\\FilamentLockscreenServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentLockscreen": "lockscreen\\FilamentLockscreen\\Facades\\FilamentLockscreen"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "lockscreen\\FilamentLockscreen\\": "src",
+                    "lockscreen\\FilamentLockscreen\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marjose",
+                    "email": "hypernate1@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is my package filament-lockscreen",
+            "homepage": "https://github.com/marjose123/filament-lockscreen",
+            "keywords": [
+                "MarJose123",
+                "filament-lockscreen",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/MarJose123/filament-lockscreen/issues",
+                "source": "https://github.com/MarJose123/filament-lockscreen/tree/1.1.5"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/whoami213",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/MarJose123",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-05-19T03:48:33+00:00"
+        },
+        {
             "name": "masterminds/html5",
             "version": "2.8.0",
             "source": {
@@ -3411,6 +3493,72 @@
                 }
             ],
             "time": "2023-02-25T19:38:58+00:00"
+        },
+        {
+            "name": "phpsa/filament-password-reveal",
+            "version": "v1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpsa/filament-password-reveal.git",
+                "reference": "e3e3300901b455241c514f1e0083c13161dffecd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpsa/filament-password-reveal/zipball/e3e3300901b455241c514f1e0083c13161dffecd",
+                "reference": "e3e3300901b455241c514f1e0083c13161dffecd",
+                "shasum": ""
+            },
+            "require": {
+                "filament/forms": "^2.9",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.10"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Phpsa\\FilamentPasswordReveal\\FilamentPasswordRevealProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Phpsa\\FilamentPasswordReveal\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Craig G Smith",
+                    "email": "vxdhost@gmail.com"
+                }
+            ],
+            "description": "Password Input with option to show",
+            "homepage": "https://cgs4k.nz",
+            "keywords": [
+                "cli",
+                "filament",
+                "fun",
+                "laravel",
+                "resource",
+                "ui",
+                "user",
+                "widget"
+            ],
+            "support": {
+                "issues": "https://github.com/phpsa/filament-password-reveal/issues",
+                "source": "https://github.com/phpsa/filament-password-reveal/tree/v1.1.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/phpsa",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-22T21:39:18+00:00"
         },
         {
             "name": "psr/container",

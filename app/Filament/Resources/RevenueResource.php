@@ -53,7 +53,7 @@ class RevenueResource extends Resource
                     ->options(\App\Models\Corporation::query()->get()->pluck('name', 'id'))
                     ->afterStateUpdated(function ($state, Closure $set) {
                         $corporation = \App\Models\Corporation::query()->find($state);
-                        $set('currency_id', $corporation->currency_id);
+                        $corporation ? $set('currency_id', $corporation->currency_id) : null;
                     })
                     ->searchable()
                     ->placeholder('Select Corporation')

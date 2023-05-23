@@ -15,7 +15,8 @@
         "laravel/framework": "^10.8",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-        "livewire/livewire": "^2.12"
+        "livewire/livewire": "^2.12",
+        "marjose123/filament-lockscreen": "^1.1"
     },
     "require-dev": {
         "doctrine/dbal": "^3.6",
