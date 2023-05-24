@@ -24,20 +24,21 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Filament::serving(function () {
-            Filament::registerUserMenuItems([
-                UserMenuItem::make()
-                    ->label('Change Company (' . Company::find(session('company_id'))->name . ')')
-                    ->url(route('company.change'))
-                    ->icon('heroicon-s-refresh'),
-                // ...
-            ]);
+            if (Company::find(session()->get('company_id'))) {
+                Filament::registerUserMenuItems([
+                    UserMenuItem::make()
+                        ->label('Change Company ('. Company::find(session()->get('company_id'))->name .')')
+                        ->url(route('company.change'))
+                        ->icon('heroicon-o-refresh'),
+                    // ...
+                ]);
 
-
-            Filament::registerNavigationItems([
-                NavigationItem::make(Company::find(session()->get('company_id'))->name)
-                    ->icon('heroicon-s-office-building')
-                    ->sort(-2),
-            ]);
+                Filament::registerNavigationItems([
+                    NavigationItem::make(Company::find(session()->get('company_id'))->name)
+                        ->icon('heroicon-o-office-building')
+                        ->sort(-2),
+                ]);
+            }
         });
     }
 }
