@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Invoice extends Model
+class Bill extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -27,7 +27,7 @@ class Invoice extends Model
     ];
 
     protected $appends = [
-        'invoice_payments_sum',
+        'bill_payments_sum',
         'has_any_relation',
     ];
 
@@ -53,22 +53,22 @@ class Invoice extends Model
 
     public function items()
     {
-        return $this->hasMany(InvoiceItem::class);
+        return $this->hasMany(BillItem::class);
     }
 
     public function payments()
     {
-        return $this->hasMany(InvoicePayment::class);
+        return $this->hasMany(BillPayment::class);
     }
 
-    public function getInvoicePaymentsSumAttribute()
+    public function getBillPaymentsSumAttribute()
     {
-        $revenues = $this->payments->pluck('revenue_id')->toArray();
+        $expenses = $this->payments->pluck('expense_id')->toArray();
 
         $sum = 0;
 
-        foreach ($revenues as $revenue) {
-            $sum += Revenue::find($revenue)->amount;
+        foreach ($expenses as $expense) {
+            $sum += Expense::find($expense)->amount;
         }
 
         return $sum;

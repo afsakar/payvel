@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class InvoiceItem extends Model
+class BillItem extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'invoice_id',
+        'bill_id',
         'material_id',
         'quantity',
         'price',
@@ -21,9 +21,9 @@ class InvoiceItem extends Model
         'tax_rate',
     ];
 
-    public function invoice()
+    public function bill()
     {
-        return $this->belongsTo(Invoice::class);
+        return $this->belongsTo(Bill::class);
     }
 
     public function material()

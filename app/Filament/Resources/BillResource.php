@@ -2,20 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use Akaunting\Money\View\Components\Money;
-use App\Filament\Resources\InvoiceResource\Pages;
-use App\Filament\Resources\InvoiceResource\RelationManagers;
-use App\Models\Company;
+use App\Filament\Resources\BillResource\Pages;
+use App\Filament\Resources\BillResource\RelationManagers;
+use App\Models\Bill;
+use App\Models\BillItem;
 use App\Models\Corporation;
-use App\Models\Invoice;
+use App\Models\Expense;
 use App\Models\Material;
-use App\Models\Revenue;
 use App\Models\Waybill;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\TextInput\Mask;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -24,9 +22,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class InvoiceResource extends Resource
+class BillResource extends Resource
 {
-    protected static ?string $model = Invoice::class;
+    protected static ?string $model = Bill::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -64,12 +62,12 @@ class InvoiceResource extends Resource
                         ->label('Waybill')
                         ->reactive()
                         ->options(function (Closure $get, ?Model $record) {
-                            $waybills = Waybill::where('company_id', $get('company_id'))->where('corporation_id', $get('corporation_id'))->whereDoesntHave('invoices')->get()->pluck('number', 'id');
+                            $waybills = Waybill::where('company_id', $get('company_id'))->where('corporation_id', $get('corporation_id'))->whereDoesntHave('bills')->whereDoesntHave('invoices')->get()->pluck('number', 'id');
                             if ($record && $record->waybill_id) {
                                 $waybills->put($record->waybill_id, $record->waybill->number);
                                 return $waybills;
                             } else {
-                                return Waybill::where('company_id', $get('company_id'))->where('corporation_id', $get('corporation_id'))->whereDoesntHave('invoices')->get()->pluck('number', 'id');
+                                return Waybill::where('company_id', $get('company_id'))->where('corporation_id', $get('corporation_id'))->whereDoesntHave('bills')->whereDoesntHave('invoices')->get()->pluck('number', 'id');
                             }
                         })
                         ->afterStateUpdated(function ($state, Closure $set, ?Model $record) {
@@ -140,7 +138,7 @@ class InvoiceResource extends Resource
                             return $get('corporation_id') === null;
                         })
                         ->defaultItems(0)
-                        ->createItemButtonLabel('Add Invoice Item')
+                        ->createItemButtonLabel('Add Bill Item')
                 ])
                     ->hidden(function (Closure $get) {
                         return $get('waybill_id') !== null;
@@ -169,23 +167,23 @@ class InvoiceResource extends Resource
                                             return Corporation::query()->find($get('../../corporation_id'))->id;
                                         }
                                     })->hidden(),
-                                Forms\Components\Select::make('revenue_id')
-                                    ->label('Revenue')
+                                Forms\Components\Select::make('expense_id')
+                                    ->label('Expense')
                                     ->reactive()
                                     ->searchable()
                                     ->options(function (?Model $record, Closure $get) {
-                                        if ($record && $record->revenue->company_id && $record->revenue->company_id) {
-                                            $revenues = Revenue::query()->where([
-                                                'company_id' => $record->revenue->company_id,
-                                                'corporation_id' => $record->revenue->corporation_id,
-                                            ])->whereDoesntHave('invoices')->pluck('amount', 'id');
+                                        if ($record && $record->expense->company_id && $record->expense->company_id) {
+                                            $expenses = Expense::query()->where([
+                                                'company_id' => $record->expense->company_id,
+                                                'corporation_id' => $record->expense->corporation_id,
+                                            ])->whereDoesntHave('bills')->pluck('amount', 'id');
 
-                                            return $revenues->put($record->revenue_id, $record->revenue->amount);
+                                            return $expenses->put($record->expense_id, $record->expense->amount);
                                         }
-                                        return Revenue::query()->where([
+                                        return Expense::query()->where([
                                             'company_id' => $get('../../company_id'),
                                             'corporation_id' => $get('../../corporation_id'),
-                                        ])->whereDoesntHave('invoices')->pluck('amount', 'id');
+                                        ])->whereDoesntHave('bills')->pluck('amount', 'id');
                                     })
                                     ->required(),
                             ])
@@ -232,7 +230,7 @@ class InvoiceResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('total'),
-                Tables\Columns\TextColumn::make('invoice_payments_sum')
+                Tables\Columns\TextColumn::make('bill_payments_sum')
                     ->label('Payments')
                     ->sortable(),
             ])
@@ -256,10 +254,10 @@ class InvoiceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListInvoices::route('/'),
-            'create' => Pages\CreateInvoice::route('/create'),
-            'view' => Pages\ViewInvoice::route('/{record}'),
-            'edit' => Pages\EditInvoice::route('/{record}/edit'),
+            'index' => Pages\ListBills::route('/'),
+            'create' => Pages\CreateBill::route('/create'),
+            'view' => Pages\ViewBill::route('/{record}'),
+            'edit' => Pages\EditBill::route('/{record}/edit'),
         ];
     }
 

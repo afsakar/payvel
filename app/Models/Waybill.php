@@ -50,8 +50,13 @@ class Waybill extends Model
         return $this->hasMany(Invoice::class);
     }
 
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
+
     public function getHasAnyRelationAttribute()
     {
-        return $this->items()->count() > 0 || $this->invoices()->count() > 0;
+        return $this->items()->count() > 0 || $this->invoices()->count() > 0 || $this->bills()->count() > 0;
     }
 }
