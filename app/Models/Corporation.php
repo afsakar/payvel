@@ -38,8 +38,33 @@ class Corporation extends Model
         return $this->hasMany(Agreement::class);
     }
 
+    public function waybills()
+    {
+        return $this->hasMany(Waybill::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
+
+    public function revenues()
+    {
+        return $this->hasMany(Revenue::class);
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
+
     public function getHasAnyRelationAttribute()
     {
-        return $this->agreements()->count() > 0;
+        return $this->agreements()->count() > 0 || $this->waybills()->count() > 0 || $this->invoices()->count() > 0 || $this->bills()->count() > 0 || $this->revenues()->count() > 0 || $this->expenses()->count() > 0;
     }
 }

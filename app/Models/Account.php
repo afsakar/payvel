@@ -38,13 +38,28 @@ class Account extends Model
         return $this->hasMany(Revenue::class);
     }
 
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
+
+    public function outgoingTransactions()
+    {
+        return $this->hasMany(Transaction::class, 'from_account_id');
+    }
+
+    public function incomingTransactions()
+    {
+        return $this->hasMany(Transaction::class, 'to_account_id');
+    }
+
     public function getBalanceAttribute()
     {
-        return $this->starting_balance + $this->revenues()->sum('amount');
+        return $this->starting_balance + $this->revenues()->sum('amount') - $this->expenses()->sum('amount') + $this->incomingTransactions()->sum('amount') - $this->outgoingTransactions()->sum('amount');
     }
 
     public function getHasAnyRelationAttribute()
     {
-        return $this->revenues()->count() > 0;
+        return $this->revenues()->count() > 0 || $this->expenses()->count() > 0 || $this->incomingTransactions()->count() > 0 || $this->outgoingTransactions()->count() > 0;
     }
 }
