@@ -14,17 +14,10 @@ class CompanySeeder extends Seeder
      */
     public function run()
     {
-
         \App\Models\Company::insert([
-            'name' => 'Tire İnşaat',
-            'owner' => 'Muzaffer ORUÇ',
-            'tel_number' => '4122245630',
-        ]);
-
-        \App\Models\Company::insert([
-            'name' => 'Madalyon Mühendislik İnşaat',
-            'owner' => 'Mehmet Ali ORUÇ',
-            'tel_number' => '4122245630',
+            'name' => 'Example Company',
+            'owner' => 'John Doe',
+            'tel_number' => '1234567890',
         ]);
     }
 }

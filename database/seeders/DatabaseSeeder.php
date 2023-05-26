@@ -14,13 +14,22 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        //\App\Models\User::factory()->create([
+        //    'name' => 'John Doe',
+        //    'email' => 'john@example.com',
+        //]);
+
         $this->call([
             CurrencySeeder::class,
             CompanySeeder::class,
+            AccountTypeSeeder::class,
+            AccountSeeder::class,
+            CategorySeeder::class,
+            TaxSeeder::class,
+            WithHoldingSeeder::class,
+            UnitSeeder::class,
+            CorporationSeeder::class,
+            MaterialSeeder::class,
         ]);
     }
 }
