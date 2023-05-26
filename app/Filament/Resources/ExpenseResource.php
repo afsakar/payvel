@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ExpenseResource\Pages;
 use App\Filament\Resources\ExpenseResource\RelationManagers;
 use App\Models\Account;
+use App\Models\Bill;
 use App\Models\Expense;
 use Closure;
 use Filament\Forms;
@@ -103,6 +104,7 @@ class ExpenseResource extends Resource
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('amount'),
                 Tables\Columns\TextColumn::make('bill_number')
+                    ->url(fn ($record) => $record->bill_number !== null ? route('filament.resources.bills.view', Bill::where('number', $record->bill_number)->first()->id) : null)
                     ->label('Bill Number'),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()

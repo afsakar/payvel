@@ -110,6 +110,7 @@ class RevenueResource extends Resource
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('amount'),
                 Tables\Columns\TextColumn::make('invoice_number')
+                    ->url(fn ($record) => $record->invoice_number !== null ? route('filament.resources.invoices.view', Invoice::where('number', $record->invoice_number)->first()->id) : null)
                     ->label('Invoice Number'),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()

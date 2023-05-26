@@ -211,6 +211,7 @@ class BillResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('waybill.number')
+                    ->url(fn ($record) => $record->waybill_id ? route('filament.resources.waybills.view', $record->waybill_id) : null)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('with_holding.rate')
