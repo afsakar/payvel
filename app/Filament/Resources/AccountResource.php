@@ -80,7 +80,6 @@ class AccountResource extends Resource
                     ->label('Detail')
                     ->color('blue')
                     ->icon('heroicon-s-document')
-                    ->hidden(fn ($record) => !$record->has_any_relation)
                     ->url(function ($record) {
                         return route('filament.resources.accounts.detail', ['record' => $record]);
                     }),

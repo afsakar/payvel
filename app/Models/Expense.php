@@ -27,7 +27,6 @@ class Expense extends Model
     protected $appends = [
         'has_any_relation',
         'bill_number',
-        'transaction_type',
         'amount_with_currency'
     ];
 

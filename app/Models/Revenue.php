@@ -27,7 +27,6 @@ class Revenue extends Model
     protected $appends = [
         'has_any_relation',
         'invoice_number',
-        'transaction_type',
         'amount_with_currency'
     ];
 

@@ -16,4 +16,11 @@ class ManageExpenses extends ManageRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            ExpenseResource\Widgets\ExpenseWidget::class,
+        ];
+    }
 }
