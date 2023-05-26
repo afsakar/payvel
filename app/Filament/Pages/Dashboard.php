@@ -34,14 +34,13 @@ class Dashboard extends Page
     {
         return [
             AccountWidget::class,
-            FilamentInfoWidget::class,
             RevenueWidget::class,
         ];
     }
 
     protected function getColumns(): int | string | array
     {
-        return 2;
+        return 1;
     }
 
     protected function getTitle(): string

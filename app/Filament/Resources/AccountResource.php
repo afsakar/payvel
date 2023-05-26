@@ -6,14 +6,17 @@ use App\Filament\Resources\AccountResource\Pages;
 use App\Filament\Resources\AccountResource\RelationManagers;
 use App\Models\Account;
 use App\Models\AccountType;
+use Filament\Tables\Actions\Action;
 use App\Models\Currency;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AccountResource extends Resource
@@ -21,6 +24,8 @@ class AccountResource extends Resource
     protected static ?string $model = Account::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cash';
+
+    public ?Model $record = null;
 
     public static function form(Form $form): Form
     {
@@ -71,6 +76,14 @@ class AccountResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Action::make('detail')
+                    ->label('Detail')
+                    ->color('blue')
+                    ->icon('heroicon-s-document')
+                    ->hidden(fn ($record) => !$record->has_any_relation)
+                    ->url(function ($record) {
+                        return route('filament.resources.accounts.detail', ['record' => $record]);
+                    }),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
@@ -85,6 +98,7 @@ class AccountResource extends Resource
     {
         return [
             'index' => Pages\ManageAccounts::route('/'),
+            'detail' => Pages\AccountDetail::route('/{record}/detail'),
         ];
     }
 

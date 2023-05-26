@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a09f2476a72cce462cd629c22798c22",
+    "content-hash": "d8d29ad962646faca1c7ccad318b842e",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -7177,6 +7177,54 @@
                 }
             ],
             "time": "2022-03-08T17:03:00+00:00"
+        },
+        {
+            "name": "webbingbrasil/filament-datefilter",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webbingbrasil/filament-datefilter.git",
+                "reference": "3613479d857ee5192966b9450441b577a3d1ed1f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webbingbrasil/filament-datefilter/zipball/3613479d857ee5192966b9450441b577a3d1ed1f",
+                "reference": "3613479d857ee5192966b9450441b577a3d1ed1f",
+                "shasum": ""
+            },
+            "require": {
+                "filament/tables": "^2.15",
+                "php": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Webbingbrasil\\FilamentDateFilter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danilo Andrade",
+                    "email": "danilo@webbingbrasil.com.br",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Date filter component for filament tables.",
+            "homepage": "https://github.com/webbingbrasil/filament-datefilter",
+            "keywords": [
+                "filament",
+                "filter",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/webbingbrasil/filament-datefilter/issues",
+                "source": "https://github.com/webbingbrasil/filament-datefilter/tree/1.1.1"
+            },
+            "time": "2022-10-24T21:46:22+00:00"
         },
         {
             "name": "webmozart/assert",

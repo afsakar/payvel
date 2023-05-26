@@ -8,6 +8,7 @@ use App\Filament\Resources\RevenueResource\RelationManagers;
 use App\Filament\Resources\RevenueResource\Widgets\RevenueWidget;
 use App\Models\Account;
 use App\Models\Company;
+use App\Models\Invoice;
 use App\Models\Revenue;
 use Carbon\Carbon;
 use Closure;

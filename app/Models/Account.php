@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -55,7 +57,13 @@ class Account extends Model
 
     public function getBalanceAttribute()
     {
-        return $this->starting_balance + $this->revenues()->sum('amount') - $this->expenses()->sum('amount') + $this->incomingTransactions()->sum('amount') - $this->outgoingTransactions()->sum('amount');
+        $balance = $this->starting_balance + $this->revenues()->sum('amount') - $this->expenses()->sum('amount') + $this->incomingTransactions()->sum('amount') - $this->outgoingTransactions()->sum('amount');
+
+        if ($this->currency->position == 'right') {
+            return number_format($balance, 2) . ' ' . $this->currency->symbol;
+        } else {
+            return $this->currency->symbol . ' ' . number_format($balance, 2);
+        }
     }
 
     public function getHasAnyRelationAttribute()

@@ -26,7 +26,9 @@ class Revenue extends Model
 
     protected $appends = [
         'has_any_relation',
-        'invoice_number'
+        'invoice_number',
+        'transaction_type',
+        'amount_with_currency'
     ];
 
     public function account()
@@ -62,5 +64,14 @@ class Revenue extends Model
     public function getInvoiceNumberAttribute()
     {
         return $this->invoices()->first()->number ?? null;
+    }
+
+    public function getAmountWithCurrencyAttribute()
+    {
+        if ($this->corporation->currency->position === "right") {
+            return number_format($this->amount, 2) . " " . $this->corporation->currency->symbol;
+        } else {
+            return $this->corporation->currency->symbol . " " . number_format($this->amount, 2);
+        }
     }
 }
