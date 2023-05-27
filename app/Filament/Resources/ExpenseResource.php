@@ -102,7 +102,8 @@ class ExpenseResource extends Resource
                 Tables\Columns\TextColumn::make('due_at')
                     ->sortable()
                     ->dateTime('d/m/Y'),
-                Tables\Columns\TextColumn::make('amount'),
+                Tables\Columns\TextColumn::make('amount')
+                    ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol),
                 Tables\Columns\TextColumn::make('bill_number')
                     ->url(fn ($record) => $record->bill_number !== null ? route('filament.resources.bills.view', Bill::where('number', $record->bill_number)->first()->id) : null)
                     ->label('Bill Number'),

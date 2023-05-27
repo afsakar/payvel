@@ -68,7 +68,8 @@ class TransactionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('due_at')
                     ->dateTime('d/m/Y'),
-                Tables\Columns\TextColumn::make('amount'),
+                Tables\Columns\TextColumn::make('amount')
+                    ->formatStateUsing(fn ($record, $state) => $record->from_account->currency->position == 'left' ? $record->from_account->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->from_account->currency->symbol),
                 Tables\Columns\TextColumn::make('from_account.name')
                     ->label('Sender')
                     ->searchable(),

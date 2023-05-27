@@ -108,7 +108,8 @@ class RevenueResource extends Resource
                 Tables\Columns\TextColumn::make('due_at')
                     ->sortable()
                     ->dateTime('d/m/Y'),
-                Tables\Columns\TextColumn::make('amount'),
+                Tables\Columns\TextColumn::make('amount')
+                    ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol),
                 Tables\Columns\TextColumn::make('invoice_number')
                     ->url(fn ($record) => $record->invoice_number !== null ? route('filament.resources.invoices.view', Invoice::where('number', $record->invoice_number)->first()->id) : null)
                     ->label('Invoice Number'),

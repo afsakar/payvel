@@ -1,5 +1,4 @@
 <x-filament::page>
-
     <div
         class="filament-forms-card-component p-6 bg-white rounded-xl text-2xl border border-gray-300 dark:border-gray-600 dark:bg-gray-800 flex items-center justify-between">
         <div class="">

@@ -67,4 +67,50 @@ class Corporation extends Model
     {
         return $this->agreements()->count() > 0 || $this->waybills()->count() > 0 || $this->invoices()->count() > 0 || $this->bills()->count() > 0 || $this->revenues()->count() > 0 || $this->expenses()->count() > 0;
     }
+
+    public function getTotalFormalRevenueAttribute()
+    {
+        return $this->revenues()->where('company_id', session()->get('company_id'))->where('type', 'formal')->sum('amount');
+    }
+
+    public function getTotalInformalRevenueAttribute()
+    {
+        return $this->revenues()->where('company_id', session()->get('company_id'))->where('type', 'informal')->sum('amount');
+    }
+
+    public function getTotalFormalExpenseAttribute()
+    {
+        return $this->expenses()->where('company_id', session()->get('company_id'))->where('type', 'formal')->sum('amount');
+    }
+
+    public function getTotalInformalExpenseAttribute()
+    {
+        return $this->expenses()->where('company_id', session()->get('company_id'))->where('type', 'informal')->sum('amount');
+    }
+
+    public function getInvoiceTotalAttribute()
+    {
+        $invoices = $this->invoices()->where('company_id', session()->get('company_id'))->get();
+
+        $total = 0;
+
+        foreach ($invoices as $invoice) {
+            $total += $invoice->total;
+        }
+
+        return $total;
+    }
+
+    public function getBillTotalAttribute()
+    {
+        $bills = $this->bills()->where('company_id', session()->get('company_id'))->get();
+
+        $total = 0;
+
+        foreach ($bills as $bill) {
+            $total += $bill->total;
+        }
+
+        return $total;
+    }
 }

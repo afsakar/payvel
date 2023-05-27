@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CorporationResource\Pages;
 use App\Filament\Resources\CorporationResource\RelationManagers;
+use App\Filament\Resources\CorporationResource\Widgets\RevenuesWidget;
 use App\Models\Corporation;
 use App\Models\Currency;
 use Filament\Forms;
@@ -14,6 +15,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\Action;
 
 class CorporationResource extends Resource
 {
@@ -96,6 +98,13 @@ class CorporationResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Action::make('detail')
+                    ->label('Detail')
+                    ->color('blue')
+                    ->icon('heroicon-s-document')
+                    ->url(function ($record) {
+                        return route('filament.resources.corporations.detail', ['record' => $record]);
+                    }),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
@@ -110,7 +119,20 @@ class CorporationResource extends Resource
     {
         return [
             'index' => Pages\ManageCorporations::route('/'),
+            'detail' => Pages\CorporationDetail::route('/{record}/detail'),
         ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            RevenuesWidget::class,
+        ];
+    }
+
+    protected function getHeaderWidgetsColumns(): int | array
+    {
+        return 1;
     }
 
     public static function getEloquentQuery(): Builder

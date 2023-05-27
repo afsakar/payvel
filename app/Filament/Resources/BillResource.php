@@ -227,11 +227,14 @@ class BillResource extends Resource
                         'success' => 'delivered',
                         'danger' => 'cancelled',
                     ]),
-                Tables\Columns\TextColumn::make('discount'),
+                Tables\Columns\TextColumn::make('discount')
+                    ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d/m/Y'),
-                Tables\Columns\TextColumn::make('total'),
+                Tables\Columns\TextColumn::make('total')
+                    ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol),
                 Tables\Columns\TextColumn::make('bill_payments_sum')
+                    ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol)
                     ->label('Payments')
                     ->sortable(),
             ])
