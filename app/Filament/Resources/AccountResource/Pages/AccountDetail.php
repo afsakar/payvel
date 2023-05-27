@@ -4,15 +4,9 @@ namespace App\Filament\Resources\AccountResource\Pages;
 
 use App\Filament\Resources\AccountResource;
 use App\Models\Account;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Pages\Page;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Tables;
-use Illuminate\Contracts\View\View;
-use Webbingbrasil\FilamentDateFilter\DateFilter;
-use Filament\Forms;
-use Filament\Tables\Filters\Filter;
+use Filament\Pages\Actions;
 
 class AccountDetail extends Page implements Tables\Contracts\HasTable
 {
@@ -30,5 +24,19 @@ class AccountDetail extends Page implements Tables\Contracts\HasTable
     {
         $this->record = $record;
         $this->account = Account::find($record);
+    }
+
+    protected function getActions(): array
+    {
+        return [
+            Actions\Action::make('Go Back')
+                ->icon('heroicon-o-arrow-left')
+                ->url(route('filament.resources.accounts.index'))
+        ];
+    }
+
+    protected function getTitle(): string
+    {
+        return $this->account->name;
     }
 }

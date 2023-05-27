@@ -7,6 +7,7 @@ use App\Filament\Resources\CorporationResource\Widgets\RevenuesWidget;
 use App\Models\Corporation;
 use Filament\Resources\Pages\Page;
 use Filament\Tables;
+use Filament\Pages\Actions;
 
 class CorporationDetail extends Page implements Tables\Contracts\HasTable
 {
@@ -33,5 +34,19 @@ class CorporationDetail extends Page implements Tables\Contracts\HasTable
         return [
             RevenuesWidget::class,
         ];
+    }
+
+    protected function getActions(): array
+    {
+        return [
+            Actions\Action::make('Go Back')
+            ->icon('heroicon-o-arrow-left')
+            ->url(route('filament.resources.corporations.index'))
+        ];
+    }
+
+    protected function getTitle(): string
+    {
+        return $this->corporation->name;
     }
 }
