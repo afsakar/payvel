@@ -41,8 +41,6 @@ class TaxResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('rate'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

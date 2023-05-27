@@ -11,6 +11,7 @@ use Livewire\Component;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class WaybillTable extends Component implements Tables\Contracts\HasTable
 {
@@ -54,17 +55,17 @@ class WaybillTable extends Component implements Tables\Contracts\HasTable
     {
         return [
             Filter::make('due_date')
-            ->form([
-                Forms\Components\DatePicker::make('due_from')
-                ->default(Carbon::now()->subYear())
-                    ->closeOnDateSelection()
-                    ->timezone('Europe/Istanbul')
-                    ->label('From Date'),
-                Forms\Components\DatePicker::make('due_until')
-                ->closeOnDateSelection()
-                    ->timezone('Europe/Istanbul')
-                    ->label('To Date')
-            ])
+                ->form([
+                    Forms\Components\DatePicker::make('due_from')
+                        ->default(Carbon::now()->subYear())
+                        ->closeOnDateSelection()
+                        ->timezone('Europe/Istanbul')
+                        ->label('From Date'),
+                    Forms\Components\DatePicker::make('due_until')
+                        ->closeOnDateSelection()
+                        ->timezone('Europe/Istanbul')
+                        ->label('To Date')
+                ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
                         ->when(
@@ -77,10 +78,10 @@ class WaybillTable extends Component implements Tables\Contracts\HasTable
                         );
                 }),
             Filter::make('number')
-            ->form([
-                Forms\Components\TextInput::make('number')
-                ->label('Waybill Number')
-            ])
+                ->form([
+                    Forms\Components\TextInput::make('number')
+                        ->label('Waybill Number')
+                ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query->where('number', 'like', '%' . $data['number'] . '%');
                 }),
@@ -92,15 +93,22 @@ class WaybillTable extends Component implements Tables\Contracts\HasTable
         return 2;
     }
 
+    protected function getTableBulkActions(): array
+    {
+        return [
+            FilamentExportBulkAction::make('Export'),
+        ];
+    }
+
     protected function getTableActions(): array
     {
         return [
             Action::make('View')
-            ->color('blue')
-            ->icon('heroicon-s-eye')
-            ->url(function ($record) {
-                return route('filament.resources.waybills.view', ['record' => $record]);
-            }),
+                ->color('blue')
+                ->icon('heroicon-s-eye')
+                ->url(function ($record) {
+                    return route('filament.resources.waybills.view', ['record' => $record]);
+                }),
         ];
     }
 

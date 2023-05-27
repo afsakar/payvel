@@ -39,8 +39,6 @@ class AccountTypeResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

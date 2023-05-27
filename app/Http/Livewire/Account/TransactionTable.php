@@ -12,6 +12,7 @@ use Filament\Tables\Filters\Filter;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class TransactionTable extends Component implements Tables\Contracts\HasTable
 {
@@ -97,6 +98,13 @@ class TransactionTable extends Component implements Tables\Contracts\HasTable
     protected function getTableFiltersFormColumns(): int
     {
         return 2;
+    }
+
+    protected function getTableBulkActions(): array
+    {
+        return [
+            FilamentExportBulkAction::make('Export'),
+        ];
     }
 
     public function render()

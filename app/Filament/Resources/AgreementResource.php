@@ -78,8 +78,6 @@ class AgreementResource extends Resource
                 Tables\Columns\TextColumn::make('company.name'),
                 Tables\Columns\TextColumn::make('corporation.name'),
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

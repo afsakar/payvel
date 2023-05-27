@@ -91,8 +91,6 @@ class CorporationResource extends Resource
                         'primary',
                         'success' => 'vendor',
                     ]),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

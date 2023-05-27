@@ -14,6 +14,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class TransactionResource extends Resource
 {
@@ -77,8 +78,6 @@ class TransactionResource extends Resource
                     ->label('Receiver')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
             ])
             ->filters([
                 //
@@ -88,7 +87,9 @@ class TransactionResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([]);
+            ->bulkActions([
+                FilamentExportBulkAction::make('export')
+            ]);
     }
 
     public static function getPages(): array

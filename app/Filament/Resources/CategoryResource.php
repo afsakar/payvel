@@ -53,8 +53,6 @@ class CategoryResource extends Resource
                         'success' => 'income',
                         'danger' => 'expense',
                     ]),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

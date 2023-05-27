@@ -21,6 +21,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class BillResource extends Resource
 {
@@ -229,8 +230,6 @@ class BillResource extends Resource
                     ]),
                 Tables\Columns\TextColumn::make('discount')
                     ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('total')
                     ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol),
                 Tables\Columns\TextColumn::make('bill_payments_sum')
@@ -245,7 +244,9 @@ class BillResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([]);
+            ->bulkActions([
+                FilamentExportBulkAction::make('export')
+            ]);
     }
 
     public static function getRelations(): array

@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Routing\Route;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class RevenueResource extends Resource
 {
@@ -141,7 +142,9 @@ class RevenueResource extends Resource
                 Tables\Actions\DeleteAction::make()
                     ->hidden(fn ($record) => $record->has_any_relation)
             ])
-            ->bulkActions([]);
+            ->bulkActions([
+                FilamentExportBulkAction::make('export')
+            ]);
     }
 
     public static function getWidgets(): array

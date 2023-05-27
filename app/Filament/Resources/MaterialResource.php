@@ -105,8 +105,6 @@ class MaterialResource extends Resource
                         'procurement' => 'Procurement',
                         'service_procurement' => 'Service & Procurement',
                     ]),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

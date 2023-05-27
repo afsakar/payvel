@@ -17,6 +17,8 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
+
 
 class ExpenseResource extends Resource
 {
@@ -123,8 +125,6 @@ class ExpenseResource extends Resource
                     ->color('danger')
                     ->label('Category'),
                 Tables\Columns\TextColumn::make('type'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
             ])
             ->filters([
                 //
@@ -135,7 +135,9 @@ class ExpenseResource extends Resource
                 Tables\Actions\DeleteAction::make()
                     ->hidden(fn ($record) => $record->has_any_relation)
             ])
-            ->bulkActions([]);
+            ->bulkActions([
+                FilamentExportBulkAction::make('export')
+            ]);
     }
 
     public static function getPages(): array

@@ -18,6 +18,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class WaybillResource extends Resource
 {
@@ -143,8 +144,6 @@ class WaybillResource extends Resource
                 Tables\Columns\TextColumn::make('waybill_date')
                     ->sortable()
                     ->dateTime('d/m/Y'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -153,7 +152,9 @@ class WaybillResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([]);
+            ->bulkActions([
+                FilamentExportBulkAction::make('export')
+            ]);
     }
 
     public static function getRelations(): array

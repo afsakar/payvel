@@ -69,8 +69,6 @@ class AccountResource extends Resource
                 Tables\Columns\TextColumn::make('accountType.name'),
                 Tables\Columns\TextColumn::make('currency.code'),
                 Tables\Columns\TextColumn::make('balance'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

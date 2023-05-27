@@ -1,4 +1,5 @@
 @import '../../vendor/filament/forms/dist/module.esm.css';
+@import '../../vendor/alperenersoy/filament-export/resources/css/filament-export.css';
 
 @tailwind base;
 @tailwind components;

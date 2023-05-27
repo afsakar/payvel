@@ -11,6 +11,7 @@ use Livewire\Component;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class InvoiceTable extends Component implements Tables\Contracts\HasTable
 {
@@ -109,6 +110,13 @@ class InvoiceTable extends Component implements Tables\Contracts\HasTable
                 ->url(function ($record) {
                     return route('filament.resources.invoices.view', ['record' => $record]);
                 }),
+        ];
+    }
+
+    protected function getTableBulkActions(): array
+    {
+        return [
+            FilamentExportBulkAction::make('Export'),
         ];
     }
 
