@@ -18,7 +18,8 @@ class EditWaybill extends EditRecord
                 ->hidden(fn ($record) => $record->has_any_relation),
             Actions\ForceDeleteAction::make(),
             Actions\RestoreAction::make(),
-            Actions\Action::make('Go Back')
+            Actions\Action::make('back')
+                ->label(__('general.go_back'))
                 ->icon('heroicon-o-arrow-left')
                 ->url(route('filament.resources.waybills.index'))
         ];

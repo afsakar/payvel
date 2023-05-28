@@ -1,0 +1,25 @@
+<?php
+
+return [
+    "bill" => "Bill",
+    "bills" => "Bills",
+    "bill_number" => "Bill Number",
+    "issue_date" => "Issue Date",
+    "company_name" => "Company Name",
+    "corporation" => "Corporation",
+    "waybill" => "Waybill",
+    "withholding_tax" => "Withholding Tax",
+    "status" => "Status",
+    "discount" => "Discount",
+    "notes" => "Notes",
+    "items" => "Items",
+    "payments" => "Payments",
+    "total" => "Total",
+    "material" => "Material",
+    "quantity" => "Quantity",
+    "price" => "Price",
+    "expense" => "Expense",
+    "delivered" => "Delivered",
+    "pending" => "Pending",
+    "cancelled" => "Cancelled",
+];

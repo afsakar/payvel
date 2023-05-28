@@ -26,10 +26,12 @@ class UnitResource extends Resource
             ->schema([
                 Grid::make(1)->schema([
                     Forms\Components\TextInput::make('name')
+                        ->label(__('units.name'))
                         ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('description')
+                        ->label(__('units.description'))
                         ->maxLength(255),
                 ]),
             ]);
@@ -39,8 +41,11 @@ class UnitResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->label(__('units.name')),
+                Tables\Columns\TextColumn::make('description')
+                    ->label(__('units.description')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -61,6 +66,21 @@ class UnitResource extends Resource
         return [
             'index' => Pages\ManageUnits::route('/'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('units.unit');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('units.units');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('units.units');
     }
 
     public static function getEloquentQuery(): Builder

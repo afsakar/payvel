@@ -26,10 +26,12 @@ class WithHoldingResource extends Resource
             ->schema([
                 Grid::make(1)->schema([
                     Forms\Components\TextInput::make('name')
+                        ->label(__('withholdings.name'))
                         ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('rate')
+                        ->label(__('withholdings.rate'))
                         ->required(),
                 ]),
             ]);
@@ -39,8 +41,11 @@ class WithHoldingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('rate'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label(__('withholdings.name')),
+                Tables\Columns\TextColumn::make('rate')
+                    ->formatStateUsing(fn ($state) => '%' . $state)
+                    ->label(__('withholdings.rate')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -61,6 +66,21 @@ class WithHoldingResource extends Resource
         return [
             'index' => Pages\ManageWithHoldings::route('/'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('withholdings.withholding');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('withholdings.withholdings');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('withholdings.withholdings');
     }
 
     public static function getEloquentQuery(): Builder

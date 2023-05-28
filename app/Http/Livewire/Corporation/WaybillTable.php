@@ -28,15 +28,18 @@ class WaybillTable extends Component implements Tables\Contracts\HasTable
     {
         return [
             Tables\Columns\TextColumn::make('due_date')
+                ->label(__('waybills.due_date'))
                 ->sortable()
                 ->dateTime('d/m/Y'),
             Tables\Columns\TextColumn::make('number')
+                ->label(__('waybills.waybill_number'))
                 ->searchable(),
             Tables\Columns\BadgeColumn::make('status')
+                ->label(__('waybills.status'))
                 ->enum([
-                    'pending' => 'Pending',
-                    'delivered' => 'Delivered',
-                    'cancelled' => 'Cancelled',
+                    'pending' => __('waybills.pending'),
+                    'delivered' => __('waybills.delivered'),
+                    'cancelled' => __('waybills.cancelled'),
                 ])
                 ->colors([
                     'primary' => 'pending',
@@ -44,9 +47,8 @@ class WaybillTable extends Component implements Tables\Contracts\HasTable
                     'danger' => 'cancelled',
                 ]),
             Tables\Columns\TextColumn::make('waybill_date')
+                ->label(__('waybills.waybill_date'))
                 ->sortable()
-                ->dateTime('d/m/Y'),
-            Tables\Columns\TextColumn::make('created_at')
                 ->dateTime('d/m/Y'),
         ];
     }
@@ -60,11 +62,11 @@ class WaybillTable extends Component implements Tables\Contracts\HasTable
                         ->default(Carbon::now()->subYear())
                         ->closeOnDateSelection()
                         ->timezone('Europe/Istanbul')
-                        ->label('From Date'),
+                        ->label(__('general.from_date')),
                     Forms\Components\DatePicker::make('due_until')
                         ->closeOnDateSelection()
                         ->timezone('Europe/Istanbul')
-                        ->label('To Date')
+                        ->label(__('general.to_date')),
                 ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
@@ -77,20 +79,12 @@ class WaybillTable extends Component implements Tables\Contracts\HasTable
                             fn (Builder $query, $date): Builder => $query->whereDate('due_date', '<=', $date),
                         );
                 }),
-            Filter::make('number')
-                ->form([
-                    Forms\Components\TextInput::make('number')
-                        ->label('Waybill Number')
-                ])
-                ->query(function (Builder $query, array $data): Builder {
-                    return $query->where('number', 'like', '%' . $data['number'] . '%');
-                }),
         ];
     }
 
     protected function getTableFiltersFormColumns(): int
     {
-        return 2;
+        return 1;
     }
 
     protected function getTableBulkActions(): array
@@ -104,6 +98,7 @@ class WaybillTable extends Component implements Tables\Contracts\HasTable
     {
         return [
             Action::make('View')
+                ->label(__('general.view'))
                 ->color('blue')
                 ->icon('heroicon-s-eye')
                 ->url(function ($record) {

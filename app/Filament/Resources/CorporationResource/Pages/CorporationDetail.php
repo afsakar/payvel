@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\CorporationResource\Pages;
 
 use App\Filament\Resources\CorporationResource;
+use App\Filament\Resources\CorporationResource\Widgets\InvoicesWidget;
 use App\Filament\Resources\CorporationResource\Widgets\RevenuesWidget;
 use App\Models\Corporation;
 use Filament\Resources\Pages\Page;
@@ -21,8 +22,6 @@ class CorporationDetail extends Page implements Tables\Contracts\HasTable
 
     public $corporation;
 
-    protected static ?string $title = 'Corporation Detail';
-
     public function mount($record)
     {
         $this->record = $record;
@@ -33,15 +32,17 @@ class CorporationDetail extends Page implements Tables\Contracts\HasTable
     {
         return [
             RevenuesWidget::class,
+            InvoicesWidget::class,
         ];
     }
 
     protected function getActions(): array
     {
         return [
-            Actions\Action::make('Go Back')
-            ->icon('heroicon-o-arrow-left')
-            ->url(route('filament.resources.corporations.index'))
+            Actions\Action::make('back')
+                ->label(__('general.go_back'))
+                ->icon('heroicon-o-arrow-left')
+                ->url(route('filament.resources.corporations.index'))
         ];
     }
 

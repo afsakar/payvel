@@ -29,6 +29,7 @@ class AgreementResource extends Resource
                 Grid::make(1)->schema([
                     Card::make()->columns(1)->schema([
                         Forms\Components\RichEditor::make('content')
+                            ->label(__('agreements.agreement_content'))
                             ->disableToolbarButtons([
                                 'attachFiles',
                                 'codeBlock',
@@ -38,19 +39,22 @@ class AgreementResource extends Resource
                     Card::make()->columns(1)->schema([
                         Grid::make(2)->schema([
                             Forms\Components\TextInput::make('name')
+                                ->label(__('agreements.agreement_name'))
                                 ->required()
                                 ->maxLength(255),
-                            Forms\Components\DatePicker::make('date')->displayFormat('d/m/Y'),
+                            Forms\Components\DatePicker::make('date')
+                                ->label(__('agreements.date'))
+                                ->displayFormat('d/m/Y'),
                         ]),
                         Forms\Components\Select::make('company_id')
-                            ->label('Company')
+                            ->label(__('agreements.company_name'))
                             ->reactive()
                             ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
                             ->searchable()
                             ->default(session()->get('company_id'))
                             ->disabled(),
                         Forms\Components\Select::make('corporation_id')
-                            ->label('Corporation')
+                            ->label(__('agreements.corporation'))
                             ->options(\App\Models\Corporation::all()->pluck('name', 'id'))
                             ->searchable()
                             ->required(),
@@ -58,6 +62,7 @@ class AgreementResource extends Resource
                     Card::make()->columns(1)->schema([
                         Grid::make(1)->schema([
                             SpatieMediaLibraryFileUpload::make('Files')
+                                ->label(__('agreements.files'))
                                 ->collection('agreement')
                                 ->rules([
                                     'mimes:pdf,doc,docx,xls,xlsx,png,jpg,jpeg,svg',
@@ -73,11 +78,18 @@ class AgreementResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('date')
+                    ->label(__('agreements.date'))
                     ->sortable()
                     ->dateTime('d/m/Y'),
-                Tables\Columns\TextColumn::make('company.name'),
-                Tables\Columns\TextColumn::make('corporation.name'),
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('company.name')
+                    ->label(__('agreements.company_name'))
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('corporation.name')
+                    ->label(__('agreements.corporation'))
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label(__('agreements.agreement_name'))
+                    ->searchable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -104,6 +116,21 @@ class AgreementResource extends Resource
             'view' => Pages\ViewAgreement::route('/{record}'),
             'edit' => Pages\EditAgreement::route('/{record}/edit'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('agreements.agreement');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('agreements.agreements');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('agreements.agreements');
     }
 
     public static function getEloquentQuery(): Builder

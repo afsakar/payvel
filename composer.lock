@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e9dc516b8740704c38930bbafe747b37",
+    "content-hash": "5b13693cc3eb5d589a13716fa7eebb76",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -1895,6 +1895,63 @@
                 }
             ],
             "time": "2022-05-21T17:30:32+00:00"
+        },
+        {
+            "name": "kenepa/translation-manager",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kenepa/translation-manager.git",
+                "reference": "0fbdacf733f81e0b92ea9ecc2ca0e3eaac809601"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kenepa/translation-manager/zipball/0fbdacf733f81e0b92ea9ecc2ca0e3eaac809601",
+                "reference": "0fbdacf733f81e0b92ea9ecc2ca0e3eaac809601",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^2.17",
+                "filament/notifications": "^2.17",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.10",
+                "spatie/laravel-translation-loader": "^2.7",
+                "stijnvanouplines/blade-country-flags": "^1.0"
+            },
+            "require-dev": {
+                "tightenco/duster": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Kenepa\\TranslationManager\\TranslationManagerProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kenepa\\TranslationManager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Manage your application's translation strings in Filament.",
+            "homepage": "https://github.com/kenape/translation-manager",
+            "keywords": [
+                "Kenepa",
+                "filament",
+                "laravel",
+                "localization",
+                "translation"
+            ],
+            "support": {
+                "issues": "https://github.com/kenepa/translation-manager/issues",
+                "source": "https://github.com/kenepa/translation-manager/tree/3.0.0"
+            },
+            "time": "2023-05-22T14:40:35+00:00"
         },
         {
             "name": "laravel/framework",
@@ -5094,6 +5151,76 @@
             "time": "2023-04-27T08:09:01+00:00"
         },
         {
+            "name": "spatie/laravel-translation-loader",
+            "version": "2.7.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-translation-loader.git",
+                "reference": "b45980636d3d60a3426ac44f5a51517bca8cb63a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-translation-loader/zipball/b45980636d3d60a3426ac44f5a51517bca8cb63a",
+                "reference": "b45980636d3d60a3426ac44f5a51517bca8cb63a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/translation": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "php": "^7.2|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\TranslationLoader\\TranslationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\TranslationLoader\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Store your language lines in the database, yaml or other sources",
+            "homepage": "https://github.com/spatie/laravel-translation-loader",
+            "keywords": [
+                "database",
+                "db",
+                "i8n",
+                "language",
+                "laravel",
+                "laravel-translation-loader",
+                "spatie",
+                "translate"
+            ],
+            "support": {
+                "source": "https://github.com/spatie/laravel-translation-loader/tree/2.7.6"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                }
+            ],
+            "time": "2023-02-07T10:08:04+00:00"
+        },
+        {
             "name": "spatie/simple-excel",
             "version": "3.2.0",
             "source": {
@@ -5214,6 +5341,60 @@
                 }
             ],
             "time": "2023-04-28T07:47:42+00:00"
+        },
+        {
+            "name": "stijnvanouplines/blade-country-flags",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stijnvanouplines/blade-country-flags.git",
+                "reference": "1b7d5a67d25643f70b939582f6b56c54f12070f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stijnvanouplines/blade-country-flags/zipball/1b7d5a67d25643f70b939582f6b56c54f12070f3",
+                "reference": "1b7d5a67d25643f70b939582f6b56c54f12070f3",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.0",
+                "illuminate/support": "^8.0|^9.0|^10.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.18|^8.0",
+                "pestphp/pest": "^1.4",
+                "spatie/pest-plugin-snapshots": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "StijnVanouplines\\BladeCountryFlags\\BladeCountryFlagsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "StijnVanouplines\\BladeCountryFlags\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A package to easily make use of country flags in your Laravel Blade views.",
+            "homepage": "https://github.com/stijnvanouplines/blade-country-flags",
+            "keywords": [
+                "blade",
+                "country flags",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/stijnvanouplines/blade-country-flags/issues",
+                "source": "https://github.com/stijnvanouplines/blade-country-flags/tree/1.0.3"
+            },
+            "time": "2023-02-27T08:59:37+00:00"
         },
         {
             "name": "symfony/console",

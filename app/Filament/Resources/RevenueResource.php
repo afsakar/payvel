@@ -29,7 +29,7 @@ class RevenueResource extends Resource
 {
     protected static ?string $model = Revenue::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-login';
 
     public static function form(Form $form): Form
     {
@@ -37,19 +37,21 @@ class RevenueResource extends Resource
             ->schema([
                 Grid::make(1)->schema([
                     Forms\Components\TextInput::make('amount')
+                        ->label(__('revenues.amount'))
                         ->required(),
                 ]),
                 Forms\Components\DatePicker::make('due_at')
+                    ->label(__('revenues.due_at'))
                     ->displayFormat('d/m/Y'),
                 Forms\Components\Select::make('company_id')
-                    ->label('Company')
+                    ->label(__('revenues.company_name'))
                     ->reactive()
                     ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
                     ->searchable()
                     ->default(session()->get('company_id'))
                     ->disabled(),
                 Forms\Components\Select::make('corporation_id')
-                    ->label('Corporation')
+                    ->label(__('revenues.corporation'))
                     ->reactive()
                     ->options(\App\Models\Corporation::query()->get()->pluck('name', 'id'))
                     ->afterStateUpdated(function ($state, Closure $set) {
@@ -57,10 +59,10 @@ class RevenueResource extends Resource
                         $corporation ? $set('currency_id', $corporation->currency_id) : null;
                     })
                     ->searchable()
-                    ->placeholder('Select Corporation')
+                    ->placeholder(__('revenues.select_corporation'))
                     ->required(),
                 Forms\Components\Select::make('account_id')
-                    ->label('Account')
+                    ->label(__('revenues.account_name'))
                     ->reactive()
                     ->options(function (Closure $get, ?Model $record) {
                         if ($record && $record->account_id) {
@@ -71,30 +73,31 @@ class RevenueResource extends Resource
                     ->afterStateUpdated(function ($state, Closure $set) {
                         $set('account_id', $state);
                     })
-                    ->placeholder('Select Account')
+                    ->placeholder(__('revenues.select_account'))
                     ->disabled(function (Closure $get) {
                         return !$get('corporation_id');
                     })
                     ->required(),
                 Forms\Components\Select::make('category_id')
-                    ->label('Category')
+                    ->label(__('revenues.category'))
                     ->reactive()
                     ->options(function (Closure $get) {
                         return \App\Models\Category::query()->where('type', 'income')->get()->pluck('name', 'id');
                     })
-                    ->placeholder('Select Category')
+                    ->placeholder(__('revenues.select_category'))
                     ->searchable()
                     ->required(),
                 Forms\Components\Select::make('type')
-                    ->label('Type')
+                    ->label(__('revenues.type'))
                     ->options([
-                        'formal' => 'Formal',
-                        'informal' => 'Informal',
+                        'formal' => __('revenues.formal'),
+                        'informal' => __('revenues.informal'),
                     ])
-                    ->placeholder('Select Type')
+                    ->placeholder(__('revenues.select_type'))
                     ->required(),
                 Grid::make(1)->schema([
                     Forms\Components\Textarea::make('description')
+                        ->label(__('revenues.description'))
                         ->rows(2)
                         ->required()
                         ->maxLength(65535),
@@ -107,31 +110,41 @@ class RevenueResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('due_at')
+                ->label(__('revenues.due_at'))
                     ->sortable()
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('amount')
+                    ->label(__('revenues.amount'))
                     ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol),
                 Tables\Columns\TextColumn::make('invoice_number')
-                    ->url(fn ($record) => $record->invoice_number !== null ? route('filament.resources.invoices.view', Invoice::where('number', $record->invoice_number)->first()->id) : null)
-                    ->label('Invoice Number'),
+                    ->label(__('revenues.invoice_number'))
+                    ->url(fn ($record) => $record->invoice_number !== null ? route('filament.resources.invoices.view', Invoice::where('number', $record->invoice_number)->first()->id) : null),
                 Tables\Columns\TextColumn::make('description')
+                    ->label(__('revenues.description'))
                     ->searchable()
                     ->limit(50),
                 Tables\Columns\TextColumn::make('account.name')
-                    ->searchable()
-                    ->label('Account'),
+                    ->label(__('revenues.account_name'))
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('company.name')
-                    ->searchable()
-                    ->label('Company'),
+                    ->label(__('revenues.company_name'))
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('corporation.name')
                     ->searchable()
-                    ->label('Corporation'),
+                    ->label(__('revenues.corporation')),
                 Tables\Columns\BadgeColumn::make('category.name')
                     ->color('success')
-                    ->label('Category'),
-                Tables\Columns\TextColumn::make('type'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y'),
+                    ->label(__('revenues.category')),
+                Tables\Columns\BadgeColumn::make('type')
+                    ->label(__('expenses.type'))
+                    ->enum([
+                        'formal' => __('expenses.formal'),
+                        'informal' => __('expenses.informal'),
+                    ])
+                    ->colors([
+                        'primary',
+                        'secondary' => 'informal',
+                    ]),
             ])
             ->filters([
                 //
@@ -152,6 +165,21 @@ class RevenueResource extends Resource
         return [
             RevenueWidget::class,
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('revenues.revenue');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('revenues.revenues');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('revenues.revenues');
     }
 
     public static function getPages(): array

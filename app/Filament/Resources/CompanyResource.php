@@ -27,6 +27,7 @@ class CompanyResource extends Resource
             ->schema([
                 Grid::make(1)->schema([
                     FileUpload::make('logo')
+                        ->label(__('companies.logo'))
                         ->image()
                         ->maxSize(1024)
                         ->nullable()
@@ -37,25 +38,32 @@ class CompanyResource extends Resource
                     'sm' => 2,
                 ])->schema([
                     Forms\Components\TextInput::make('name')
+                        ->label(__('companies.company_name'))
                         ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('owner')
+                        ->label(__('companies.company_owner'))
                         ->maxLength(255),
                     Forms\Components\TextInput::make('tel_number')
+                        ->label(__('companies.tel_number'))
                         ->tel()
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('gsm_number')
+                        ->label(__('companies.gsm_number'))
                         ->maxLength(255),
                     Forms\Components\TextInput::make('fax_number')
+                        ->label(__('companies.fax_number'))
                         ->maxLength(255),
                     Forms\Components\TextInput::make('email')
+                        ->label(__('companies.email'))
                         ->email()
                         ->maxLength(255),
                 ]),
                 Grid::make(1)->schema([
                     Forms\Components\Textarea::make('address')
+                        ->label(__('companies.address'))
                         ->rows(3)
                         ->maxLength(65535),
                 ]),
@@ -64,8 +72,10 @@ class CompanyResource extends Resource
                     'sm' => 2,
                 ])->schema([
                     Forms\Components\TextInput::make('tax_office')
+                        ->label(__('companies.tax_office'))
                         ->maxLength(255),
                     Forms\Components\TextInput::make('tax_number')
+                        ->label(__('companies.tax_number'))
                         ->unique(ignoreRecord: true)
                         ->maxLength(255),
                 ]),
@@ -77,14 +87,20 @@ class CompanyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('logo')
+                    ->label(__('companies.logo'))
                     ->height('auto')
                     ->width('80px'),
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('companies.company_name'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tel_number'),
+                Tables\Columns\TextColumn::make('tel_number')
+                    ->label(__('companies.tel_number')),
                 Tables\Columns\TextColumn::make('email')
+                    ->label(__('companies.email'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tax_number'),
+                Tables\Columns\TextColumn::make('tax_number')
+                    ->label(__('companies.tax_number'))
+                    ->searchable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -105,6 +121,21 @@ class CompanyResource extends Resource
         return [
             'index' => Pages\ManageCompanies::route('/'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('companies.company');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('companies.companies');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('companies.companies');
     }
 
     public static function getEloquentQuery(): Builder

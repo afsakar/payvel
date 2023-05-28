@@ -34,14 +34,14 @@ class WaybillResource extends Resource
             ->schema([
                 Card::make()->columns(2)->schema([
                     Forms\Components\Select::make('company_id')
-                        ->label('Company')
+                        ->label(__('waybills.company'))
                         ->reactive()
                         ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
                         ->searchable()
                         ->default(session()->get('company_id'))
                         ->disabled(),
                     Forms\Components\Select::make('corporation_id')
-                        ->label('Corporation')
+                        ->label(__('waybills.corporation'))
                         ->options(\App\Models\Corporation::all()->pluck('name', 'id'))
                         ->reactive()
                         ->afterStateUpdated(function ($state, $set) {
@@ -51,21 +51,27 @@ class WaybillResource extends Resource
                         ->afterStateHydrated(fn ($component) => $component->callAfterStateUpdated())
                         ->required(),
                     Forms\Components\TextInput::make('number')
+                        ->label(__('waybills.waybill_number'))
                         ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
                     Forms\Components\Select::make('status')
-                        ->label('Status')
+                        ->label(__('waybills.status'))
                         ->options([
-                            'pending' => 'Pending',
-                            'delivered' => 'Delivered',
-                            'cancelled' => 'Cancelled',
+                            'pending' => __('waybills.pending'),
+                            'delivered' => __('waybills.delivered'),
+                            'cancelled' => __('waybills.cancelled'),
                         ])
                         ->required(),
-                    Forms\Components\DatePicker::make('due_date')->displayFormat('d/m/Y'),
-                    Forms\Components\DatePicker::make('waybill_date')->displayFormat('d/m/Y'),
+                    Forms\Components\DatePicker::make('due_date')
+                        ->label(__('waybills.due_date'))
+                        ->displayFormat('d/m/Y'),
+                    Forms\Components\DatePicker::make('waybill_date')
+                        ->label(__('waybills.waybill_date'))
+                        ->displayFormat('d/m/Y'),
                     Grid::make(1)->schema([
                         Forms\Components\Textarea::make('address')
+                            ->label(__('waybills.address'))
                             ->rows(2)
                             ->required()
                             ->maxLength(65535),
@@ -73,6 +79,7 @@ class WaybillResource extends Resource
                 ]),
                 Card::make()->columns(1)->schema([
                     Forms\Components\RichEditor::make('content')
+                        ->label(__('waybills.content'))
                         ->disableToolbarButtons([
                             'attachFiles',
                             'codeBlock',
@@ -81,38 +88,41 @@ class WaybillResource extends Resource
                         ->maxLength(65535),
                 ]),
                 Card::make()->columns(1)->schema([
-                    Forms\Components\Repeater::make('items')->relationship()->schema([
-                        Grid::make(3)->schema([
-                            Forms\Components\Select::make('material_id')
-                                ->label('Material')
-                                ->reactive()
-                                ->options(function (Closure $get) {
-                                    $corporation = \App\Models\Corporation::query()->find($get('../../corporation_id'));
-                                    return Material::query()->where('currency_id', $corporation->currency->id)->get()->pluck('name', 'id');
-                                })
-                                ->afterStateUpdated(function ($state, callable $set) {
-                                    $material = Material::query()->find($state);
-                                    if ($material) {
-                                        $set('price', $material->price);
-                                    }
-                                })
-                                ->required(),
-                            Forms\Components\TextInput::make('quantity')
-                                ->required()
-                                ->numeric()
-                                ->default(1)
-                                ->maxLength(255),
-                            Forms\Components\TextInput::make('price')
-                                ->required()
-                                ->disabled()
-                                ->maxLength(255),
+                    Forms\Components\Repeater::make('items')
+                        ->label(__('waybills.items'))
+                        ->relationship()->schema([
+                            Grid::make(3)->schema([
+                                Forms\Components\Select::make('material_id')
+                                    ->label(__('waybills.material'))
+                                    ->reactive()
+                                    ->options(function (Closure $get) {
+                                        $corporation = \App\Models\Corporation::query()->find($get('../../corporation_id'));
+                                        return Material::query()->where('currency_id', $corporation->currency->id)->get()->pluck('name', 'id');
+                                    })
+                                    ->afterStateUpdated(function ($state, callable $set) {
+                                        $material = Material::query()->find($state);
+                                        if ($material) {
+                                            $set('price', $material->price);
+                                        }
+                                    })
+                                    ->required(),
+                                Forms\Components\TextInput::make('quantity')
+                                    ->label(__('waybills.quantity'))
+                                    ->required()
+                                    ->numeric()
+                                    ->default(1)
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('price')
+                                    ->label(__('waybills.price'))
+                                    ->required()
+                                    ->disabled()
+                                    ->maxLength(255),
+                            ])
                         ])
-                    ])
                         ->disabled(function (Closure $get) {
                             return $get('corporation_id') === null;
                         })
                         ->defaultItems(0)
-                        ->createItemButtonLabel('Add Waybill Item')
                 ])
             ]);
     }
@@ -122,16 +132,20 @@ class WaybillResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('number')
+                    ->label(__('waybills.waybill_number'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('company.name')
+                    ->label(__('waybills.company'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('corporation.name')
+                    ->label(__('waybills.corporation'))
                     ->searchable(),
                 Tables\Columns\BadgeColumn::make('status')
+                    ->label(__('waybills.status'))
                     ->enum([
-                        'pending' => 'Pending',
-                        'delivered' => 'Delivered',
-                        'cancelled' => 'Cancelled',
+                        'pending' => __('waybills.pending'),
+                        'delivered' => __('waybills.delivered'),
+                        'cancelled' => __('waybills.cancelled'),
                     ])
                     ->colors([
                         'primary' => 'pending',
@@ -139,9 +153,11 @@ class WaybillResource extends Resource
                         'danger' => 'cancelled',
                     ]),
                 Tables\Columns\TextColumn::make('due_date')
+                    ->label(__('waybills.due_date'))
                     ->sortable()
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('waybill_date')
+                    ->label(__('waybills.waybill_date'))
                     ->sortable()
                     ->dateTime('d/m/Y'),
             ])
@@ -172,6 +188,21 @@ class WaybillResource extends Resource
             'view' => Pages\ViewWaybill::route('/{record}'),
             'edit' => Pages\EditWaybill::route('/{record}/edit'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('waybills.waybill');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('waybills.waybills');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('waybills.waybills');
     }
 
     public static function getEloquentQuery(): Builder

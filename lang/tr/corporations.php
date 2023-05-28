@@ -1,0 +1,26 @@
+<?php
+
+return [
+    "corporation" => "Firma",
+    "corporations" => "Firmalar",
+    "corporation_name" => "Firma adı",
+    "corporation_owner" => "Firma sahibi",
+    "tel_number" => "Tel. numarası",
+    "gsm_number" => "GSM numarası",
+    "fax_number" => "Fax numarası",
+    "email" => "Email",
+    "address" => "Adres",
+    "tax_office" => "Vergi dairesi",
+    "tax_number" => "Vergi numarası",
+    "type" => "Türü",
+    "customer" => "Müşteri",
+    "vendor" => "Tedarikçi",
+    "currency" => "Para birimi",
+    "detail" => "Detay",
+    "total_formal_revenue" => "Resmi Gönderilen Ödeme",
+    "total_informal_revenue" => "Gayri Resmi Gönderilen Ödeme",
+    "total_formal_expense" => "Resmi Alınan Ödeme",
+    "total_informal_expense" => "Gayri Resmi Alınan Ödeme",
+    "invoice_total" => "Alış Faturası Toplamı",
+    "bill_total" => "Satış Faturası Toplamı",
+];

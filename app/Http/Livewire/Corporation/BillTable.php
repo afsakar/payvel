@@ -28,20 +28,27 @@ class BillTable extends Component implements Tables\Contracts\HasTable
     {
         return [
             Tables\Columns\TextColumn::make('issue_date')
+                ->label(__('bills.issue_date'))
                 ->sortable()
                 ->dateTime('d/m/Y'),
-            Tables\Columns\TextColumn::make('number'),
+            Tables\Columns\TextColumn::make('number')
+                ->label(__('bills.bill_number'))
+                ->searchable()
+                ->sortable(),
             Tables\Columns\TextColumn::make('waybill.number')
+                ->label(__('bills.waybill'))
                 ->url(fn ($record) => $record->waybill_id ? route('filament.resources.waybills.view', $record->waybill_id) : null)
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('with_holding.rate')
+                ->label(__('bills.withholding_tax'))
                 ->formatStateUsing(fn ($state) => "%$state"),
             Tables\Columns\BadgeColumn::make('status')
+                ->label(__('bills.status'))
                 ->enum([
-                    'pending' => 'Pending',
-                    'delivered' => 'Delivered',
-                    'cancelled' => 'Cancelled',
+                    'pending' => __('bills.pending'),
+                    'delivered' => __('bills.delivered'),
+                    'cancelled' => __('bills.cancelled'),
                 ])
                 ->colors([
                     'primary' => 'pending',
@@ -49,12 +56,14 @@ class BillTable extends Component implements Tables\Contracts\HasTable
                     'danger' => 'cancelled',
                 ]),
             Tables\Columns\TextColumn::make('discount')
+                ->label(__('bills.discount'))
                 ->formatStateUsing(fn ($state) => $this->formatMoney($state)),
             Tables\Columns\TextColumn::make('total')
+                ->label(__('bills.total'))
                 ->formatStateUsing(fn ($state) => $this->formatMoney($state)),
             Tables\Columns\TextColumn::make('bill_payments_sum')
                 ->formatStateUsing(fn ($state) => $this->formatMoney($state))
-                ->label('Payments')
+                ->label(__('bills.payments'))
                 ->sortable(),
         ];
     }
@@ -68,11 +77,11 @@ class BillTable extends Component implements Tables\Contracts\HasTable
                         ->default(Carbon::now()->subYear())
                         ->closeOnDateSelection()
                         ->timezone('Europe/Istanbul')
-                        ->label('From Date'),
+                        ->label(__('general.from_date')),
                     Forms\Components\DatePicker::make('due_until')
                         ->closeOnDateSelection()
                         ->timezone('Europe/Istanbul')
-                        ->label('To Date')
+                        ->label(__('general.to_date')),
                 ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
@@ -85,26 +94,19 @@ class BillTable extends Component implements Tables\Contracts\HasTable
                             fn (Builder $query, $date): Builder => $query->whereDate('issue_date', '<=', $date),
                         );
                 }),
-            Filter::make('number')
-                ->form([
-                    Forms\Components\TextInput::make('number')
-                        ->label('Bill Number')
-                ])
-                ->query(function (Builder $query, array $data): Builder {
-                    return $query->where('number', 'like', '%' . $data['number'] . '%');
-                }),
         ];
     }
 
     protected function getTableFiltersFormColumns(): int
     {
-        return 2;
+        return 1;
     }
 
     protected function getTableActions(): array
     {
         return [
             Action::make('View')
+                ->label(__('general.view'))
                 ->color('blue')
                 ->icon('heroicon-s-eye')
                 ->url(function ($record) {

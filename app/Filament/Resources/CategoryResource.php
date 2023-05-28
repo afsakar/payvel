@@ -26,13 +26,15 @@ class CategoryResource extends Resource
             ->schema([
                 Grid::make(1)->schema([
                     Forms\Components\TextInput::make('name')
+                        ->label(__('categories.category_name'))
                         ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
                     Forms\Components\Select::make('type')
+                        ->label(__('categories.category_type'))
                         ->options([
-                            'income' => 'Income',
-                            'expense' => 'Expense',
+                            'income' => __('categories.income'),
+                            'expense' => __('categories.expense'),
                         ])
                         ->required()
                 ])
@@ -43,11 +45,13 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label(__('categories.category_name')),
                 Tables\Columns\BadgeColumn::make('type')
+                    ->label(__('categories.category_type'))
                     ->enum([
-                        'income' => 'Income',
-                        'expense' => 'Expense',
+                        'income' => __('categories.income'),
+                        'expense' => __('categories.expense'),
                     ])
                     ->colors([
                         'success' => 'income',
@@ -73,6 +77,21 @@ class CategoryResource extends Resource
         return [
             'index' => Pages\ManageCategories::route('/'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('categories.category');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('categories.categories');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('categories.categories');
     }
 
     public static function getEloquentQuery(): Builder

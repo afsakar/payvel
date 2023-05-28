@@ -15,7 +15,8 @@ class ViewAgreement extends ViewRecord
         return [
             Actions\EditAction::make()
                 ->color('secondary'),
-            Actions\Action::make('Go Back')
+            Actions\Action::make('back')
+                ->label(__('general.go_back'))
                 ->icon('heroicon-o-arrow-left')
                 ->url(route('filament.resources.agreements.index'))
         ];

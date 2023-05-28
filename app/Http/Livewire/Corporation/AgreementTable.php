@@ -26,14 +26,15 @@ class AgreementTable extends Component implements Tables\Contracts\HasTable
     {
         return [
             Tables\Columns\TextColumn::make('date')
-                ->label('Date')
+                ->label(__('agreements.date'))
                 ->sortable()
                 ->dateTime('d/m/Y'),
             Tables\Columns\TextColumn::make('name')
+                ->label(__('agreements.agreement_name'))
                 ->searchable(),
             Tables\Columns\TextColumn::make('company.name')
-                ->searchable()
-                ->label('Company'),
+                ->label(__('agreements.company_name'))
+                ->searchable(),
         ];
     }
 
@@ -47,11 +48,11 @@ class AgreementTable extends Component implements Tables\Contracts\HasTable
                         ->default(Carbon::now()->subYear())
                         ->closeOnDateSelection()
                         ->timezone('Europe/Istanbul')
-                        ->label('From Date'),
+                        ->label(__('general.from_date')),
                     Forms\Components\DatePicker::make('due_until')
                         ->closeOnDateSelection()
                         ->timezone('Europe/Istanbul')
-                        ->label('To Date')
+                        ->label(__('general.to_date')),
                 ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
@@ -71,6 +72,7 @@ class AgreementTable extends Component implements Tables\Contracts\HasTable
     {
         return [
             Action::make('View')
+                ->label(__('general.view'))
                 ->color('blue')
                 ->icon('heroicon-s-eye')
                 ->url(function ($record) {

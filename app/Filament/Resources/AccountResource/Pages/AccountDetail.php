@@ -29,7 +29,8 @@ class AccountDetail extends Page implements Tables\Contracts\HasTable
     protected function getActions(): array
     {
         return [
-            Actions\Action::make('Go Back')
+            Actions\Action::make('back')
+                ->label(__('general.go_back'))
                 ->icon('heroicon-o-arrow-left')
                 ->url(route('filament.resources.accounts.index'))
         ];

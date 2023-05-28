@@ -29,47 +29,50 @@ class MaterialResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('unit_id')
-                    ->label('Unit')
+                    ->label(__('materials.unit'))
                     ->options(Unit::all()->pluck('name', 'id'))
                     ->searchable()
                     ->required(),
                 Forms\Components\Select::make('tax_id')
-                    ->label('Tax')
+                    ->label(__('materials.tax'))
                     ->options(Tax::all()->pluck('name', 'id'))
                     ->searchable()
                     ->required(),
                 Forms\Components\Select::make('currency_id')
-                    ->label('Currency')
+                    ->label(__('materials.currency'))
                     ->options(Currency::all()->pluck('name', 'id'))
                     ->searchable()
                     ->required(),
                 Forms\Components\TextInput::make('name')
+                    ->label(__('materials.name'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('code')
+                    ->label(__('materials.code'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('price')
+                    ->label(__('materials.price'))
                     ->required(),
                 Forms\Components\Select::make('category')
-                    ->label('Category')
+                    ->label(__('materials.category'))
                     ->options([
-                        'construction' => 'Construction',
-                        'electrical' => 'Electrical',
-                        'plumbing' => 'Plumbing',
-
+                        'construction' => __('materials.construction'),
+                        'electrical' => __('materials.electrical'),
+                        'plumbing' => __('materials.plumbing'),
                     ])
                     ->required(),
                 Forms\Components\Select::make('type')
-                    ->label('Type')
+                    ->label(__('materials.type'))
                     ->options([
-                        'service' => 'Service',
-                        'procurement' => 'Procurement',
-                        'service_procurement' => 'Service & Procurement',
+                        'service' => __('materials.service'),
+                        'procurement' => __('materials.procurement'),
+                        'service_procurement' => __('materials.service_procurement'),
                     ])
                     ->required(),
                 Grid::make(1)->schema([
                     Forms\Components\Textarea::make('description')
+                        ->label(__('materials.description'))
                         ->rows(2)
                         ->maxLength(255),
                 ])
@@ -81,29 +84,39 @@ class MaterialResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')
+                    ->label(__('materials.code'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('materials.name'))
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('unit.name'),
-                Tables\Columns\TextColumn::make('tax.rate'),
-                Tables\Columns\TextColumn::make('currency.code'),
+                Tables\Columns\TextColumn::make('unit.name')
+                    ->label(__('materials.unit'))
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('tax.rate')
+                    ->label(__('materials.tax')),
+                Tables\Columns\TextColumn::make('currency.code')
+                    ->label(__('materials.currency')),
                 Tables\Columns\TextColumn::make('price')
-                    ->money(function (?Model $record) {
-                        return $record->currency->code;
+                    ->label(__('materials.price'))
+                    ->formatStateUsing(function (?Model $record) {
+                        return $record->currency->position === 'left'
+                            ? $record->currency->symbol . ' ' . number_format($record->price, 2)
+                            : number_format($record->price, 2) . ' ' . $record->currency->symbol;
                     }),
                 Tables\Columns\BadgeColumn::make('category')
+                    ->label(__('materials.category'))
                     ->enum([
-                        'construction' => 'Construction',
-                        'electrical' => 'Electrical',
-                        'plumbing' => 'Plumbing',
+                        'construction' => __('materials.construction'),
+                        'electrical' => __('materials.electrical'),
+                        'plumbing' => __('materials.plumbing'),
                     ]),
                 Tables\Columns\BadgeColumn::make('type')
                     ->enum([
-                        'service' => 'Service',
-                        'procurement' => 'Procurement',
-                        'service_procurement' => 'Service & Procurement',
+                        'service' => __('materials.service'),
+                        'procurement' => __('materials.procurement'),
+                        'service_procurement' => __('materials.service_procurement'),
                     ]),
             ])
             ->filters([
@@ -118,6 +131,21 @@ class MaterialResource extends Resource
                 Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([]);
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('materials.material');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('materials.materials');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('materials.materials');
     }
 
     public static function getPages(): array

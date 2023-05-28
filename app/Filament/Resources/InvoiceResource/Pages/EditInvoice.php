@@ -26,7 +26,8 @@ class EditInvoice extends EditRecord
                     }
                 }),
             Actions\RestoreAction::make(),
-            Actions\Action::make('Go Back')
+            Actions\Action::make('back')
+                ->label(__('general.go_back'))
                 ->icon('heroicon-o-arrow-left')
                 ->url(route('filament.resources.invoices.index'))
         ];

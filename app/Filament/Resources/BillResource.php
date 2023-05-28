@@ -39,19 +39,22 @@ class BillResource extends Resource
             ->schema([
                 Card::make()->columns(2)->schema([
                     Forms\Components\TextInput::make('number')
+                        ->label(__('bills.bill_number'))
                         ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
-                    Forms\Components\DatePicker::make('issue_date')->displayFormat('d/m/Y'),
+                    Forms\Components\DatePicker::make('issue_date')
+                        ->label(__('bills.issue_date'))
+                        ->displayFormat('d/m/Y'),
                     Forms\Components\Select::make('company_id')
-                        ->label('Company')
+                        ->label(__('bills.company_name'))
                         ->reactive()
                         ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
                         ->searchable()
                         ->default(session()->get('company_id'))
                         ->disabled(),
                     Forms\Components\Select::make('corporation_id')
-                        ->label('Corporation')
+                        ->label(__('bills.corporation'))
                         ->reactive()
                         ->options(\App\Models\Corporation::all()->pluck('name', 'id'))
                         ->afterStateUpdated(function ($state, Closure $set, Closure $get) {
@@ -60,7 +63,7 @@ class BillResource extends Resource
                         ->searchable()
                         ->required(),
                     Forms\Components\Select::make('waybill_id')
-                        ->label('Waybill')
+                        ->label(__('bills.waybill'))
                         ->reactive()
                         ->options(function (Closure $get, ?Model $record) {
                             $waybills = Waybill::where('company_id', $get('company_id'))->where('corporation_id', $get('corporation_id'))->whereDoesntHave('bills')->whereDoesntHave('invoices')->get()->pluck('number', 'id');
@@ -80,25 +83,27 @@ class BillResource extends Resource
                         ->searchable()
                         ->nullable(),
                     Forms\Components\Select::make('with_holding_id')
-                        ->label('Withholding')
+                        ->label(__('bills.withholding_tax'))
                         ->options(\App\Models\Withholding::all()->pluck('name', 'id', 'rate'))
                         ->searchable()
                         ->required(),
                     Forms\Components\Select::make('status')
-                        ->label('Status')
+                        ->label(__('bills.status'))
                         ->options([
-                            'pending' => 'Pending',
-                            'delivered' => 'Delivered',
-                            'cancelled' => 'Cancelled',
+                            'pending' => __('bills.pending'),
+                            'delivered' => __('bills.delivered'),
+                            'cancelled' => __('bills.cancelled'),
                         ])
                         ->required(),
                     Forms\Components\TextInput::make('discount')
+                        ->label(__('bills.discount'))
                         ->default(0)
                         ->numeric()
                         ->nullable(),
                 ]),
                 Card::make()->columns(1)->schema([
                     Forms\Components\RichEditor::make('notes')
+                        ->label(__('bills.notes'))
                         ->disableToolbarButtons([
                             'attachFiles',
                             'codeBlock',
@@ -108,10 +113,11 @@ class BillResource extends Resource
                 ]),
                 Card::make()->columns(1)->schema([
                     Forms\Components\Repeater::make('items')
+                        ->label(__('bills.items'))
                         ->relationship()->schema([
                             Grid::make(3)->schema([
                                 Forms\Components\Select::make('material_id')
-                                    ->label('Material')
+                                    ->label(__('bills.material'))
                                     ->reactive()
                                     ->options(function (Closure $get) {
                                         $corporation = \App\Models\Corporation::query()->find($get('../../corporation_id'));
@@ -125,10 +131,12 @@ class BillResource extends Resource
                                     })
                                     ->required(),
                                 Forms\Components\TextInput::make('quantity')
+                                    ->label(__('bills.quantity'))
                                     ->required()
                                     ->numeric()
                                     ->default(1),
                                 Forms\Components\TextInput::make('price')
+                                    ->label(__('bills.price'))
                                     ->required()
                                     ->numeric()
                                     ->disabled()
@@ -139,13 +147,13 @@ class BillResource extends Resource
                             return $get('corporation_id') === null;
                         })
                         ->defaultItems(0)
-                        ->createItemButtonLabel('Add Bill Item')
                 ])
                     ->hidden(function (Closure $get) {
                         return $get('waybill_id') !== null;
                     }),
                 Card::make()->columns(1)->schema([
                     Forms\Components\Repeater::make('payments')
+                        ->label(__('bills.payments'))
                         ->relationship()->schema([
                             Grid::make(1)->schema([
                                 Forms\Components\Select::make('company_id')
@@ -169,7 +177,7 @@ class BillResource extends Resource
                                         }
                                     })->hidden(),
                                 Forms\Components\Select::make('expense_id')
-                                    ->label('Expense')
+                                    ->label(__('bills.expense'))
                                     ->reactive()
                                     ->searchable()
                                     ->options(function (?Model $record, Closure $get) {
@@ -202,39 +210,50 @@ class BillResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('issue_date')
+                    ->label(__('bills.issue_date'))
                     ->sortable()
                     ->dateTime('d/m/Y'),
-                Tables\Columns\TextColumn::make('number'),
+                Tables\Columns\TextColumn::make('number')
+                    ->label(__('bills.number'))
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('company.name')
+                    ->label(__('bills.company_name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('corporation.name')
+                    ->label(__('bills.corporation'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('waybill.number')
+                    ->label(__('bills.waybill'))
                     ->url(fn ($record) => $record->waybill_id ? route('filament.resources.waybills.view', $record->waybill_id) : null)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('with_holding.rate')
+                    ->label(__('bills.withholding_tax'))
                     ->formatStateUsing(fn ($state) => "%$state"),
                 Tables\Columns\BadgeColumn::make('status')
+                    ->label(__('bills.status'))
                     ->enum([
-                        'pending' => 'Pending',
-                        'delivered' => 'Delivered',
-                        'cancelled' => 'Cancelled',
+                        'pending' => __('bills.pending'),
+                        'delivered' => __('bills.delivered'),
+                        'cancelled' => __('bills.cancelled'),
                     ])
                     ->colors([
-                        'primary' => 'pending',
-                        'success' => 'delivered',
-                        'danger' => 'cancelled',
+                        'primary' => __('bills.pending'),
+                        'success' => __('bills.delivered'),
+                        'danger' => __('bills.cancelled'),
                     ]),
                 Tables\Columns\TextColumn::make('discount')
+                    ->label(__('bills.discount'))
                     ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol),
                 Tables\Columns\TextColumn::make('total')
+                    ->label(__('bills.total'))
                     ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol),
                 Tables\Columns\TextColumn::make('bill_payments_sum')
+                    ->label(__('bills.payments'))
                     ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol)
-                    ->label('Payments')
                     ->sortable(),
             ])
             ->filters([
@@ -254,6 +273,21 @@ class BillResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('bills.bill');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('bills.bills');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('bills.bills');
     }
 
     public static function getPages(): array

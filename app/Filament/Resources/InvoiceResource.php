@@ -42,19 +42,22 @@ class InvoiceResource extends Resource
             ->schema([
                 Card::make()->columns(2)->schema([
                     Forms\Components\TextInput::make('number')
+                        ->label(__('invoices.invoice_number'))
                         ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
-                    Forms\Components\DatePicker::make('issue_date')->displayFormat('d/m/Y'),
+                    Forms\Components\DatePicker::make('issue_date')
+                        ->label(__('invoices.issue_date'))
+                        ->displayFormat('d/m/Y'),
                     Forms\Components\Select::make('company_id')
-                        ->label('Company')
+                        ->label(__('invoices.company_name'))
                         ->reactive()
                         ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
                         ->searchable()
                         ->default(session()->get('company_id'))
                         ->disabled(),
                     Forms\Components\Select::make('corporation_id')
-                        ->label('Corporation')
+                        ->label(__('invoices.corporation'))
                         ->reactive()
                         ->options(\App\Models\Corporation::all()->pluck('name', 'id'))
                         ->afterStateUpdated(function ($state, Closure $set, Closure $get) {
@@ -63,7 +66,7 @@ class InvoiceResource extends Resource
                         ->searchable()
                         ->required(),
                     Forms\Components\Select::make('waybill_id')
-                        ->label('Waybill')
+                        ->label(__('invoices.waybill'))
                         ->reactive()
                         ->options(function (Closure $get, ?Model $record) {
                             $waybills = Waybill::where('company_id', $get('company_id'))->where('corporation_id', $get('corporation_id'))->whereDoesntHave('invoices')->get()->pluck('number', 'id');
@@ -83,12 +86,12 @@ class InvoiceResource extends Resource
                         ->searchable()
                         ->nullable(),
                     Forms\Components\Select::make('with_holding_id')
-                        ->label('Withholding')
+                        ->label(__('invoices.withholding_tax'))
                         ->options(\App\Models\Withholding::all()->pluck('name', 'id', 'rate'))
                         ->searchable()
                         ->required(),
                     Forms\Components\Select::make('status')
-                        ->label('Status')
+                        ->label(__('invoices.status'))
                         ->options([
                             'pending' => 'Pending',
                             'delivered' => 'Delivered',
@@ -96,12 +99,14 @@ class InvoiceResource extends Resource
                         ])
                         ->required(),
                     Forms\Components\TextInput::make('discount')
+                        ->label(__('invoices.discount'))
                         ->default(0)
                         ->numeric()
                         ->nullable(),
                 ]),
                 Card::make()->columns(1)->schema([
                     Forms\Components\RichEditor::make('notes')
+                        ->label(__('invoices.notes'))
                         ->disableToolbarButtons([
                             'attachFiles',
                             'codeBlock',
@@ -111,10 +116,11 @@ class InvoiceResource extends Resource
                 ]),
                 Card::make()->columns(1)->schema([
                     Forms\Components\Repeater::make('items')
+                        ->label(__('invoices.items'))
                         ->relationship()->schema([
                             Grid::make(3)->schema([
                                 Forms\Components\Select::make('material_id')
-                                    ->label('Material')
+                                    ->label(__('invoices.material'))
                                     ->reactive()
                                     ->options(function (Closure $get) {
                                         $corporation = \App\Models\Corporation::query()->find($get('../../corporation_id'));
@@ -128,10 +134,12 @@ class InvoiceResource extends Resource
                                     })
                                     ->required(),
                                 Forms\Components\TextInput::make('quantity')
+                                    ->label(__('invoices.quantity'))
                                     ->required()
                                     ->numeric()
                                     ->default(1),
                                 Forms\Components\TextInput::make('price')
+                                    ->label(__('invoices.price'))
                                     ->required()
                                     ->numeric()
                                     ->disabled()
@@ -142,17 +150,17 @@ class InvoiceResource extends Resource
                             return $get('corporation_id') === null;
                         })
                         ->defaultItems(0)
-                        ->createItemButtonLabel('Add Invoice Item')
                 ])
                     ->hidden(function (Closure $get) {
                         return $get('waybill_id') !== null;
                     }),
                 Card::make()->columns(1)->schema([
                     Forms\Components\Repeater::make('payments')
+                        ->label(__('invoices.payments'))
                         ->relationship()->schema([
                             Grid::make(1)->schema([
                                 Forms\Components\Select::make('company_id')
-                                    ->label('Company')
+                                    ->label(__('invoices.company_name'))
                                     ->reactive()
                                     ->options(\App\Models\Company::where('id', session()->get('company_id'))->pluck('name', 'id'))
                                     ->searchable()
@@ -160,7 +168,7 @@ class InvoiceResource extends Resource
                                     ->disabled()
                                     ->hidden(),
                                 Forms\Components\Select::make('corporation_id')
-                                    ->label('Corporation')
+                                    ->label(__('invoices.corporation'))
                                     ->disabled()
                                     ->options(\App\Models\Corporation::query()->pluck('name', 'id'))
                                     ->reactive()
@@ -172,7 +180,7 @@ class InvoiceResource extends Resource
                                         }
                                     })->hidden(),
                                 Forms\Components\Select::make('revenue_id')
-                                    ->label('Revenue')
+                                    ->label(__('invoices.revenue'))
                                     ->reactive()
                                     ->searchable()
                                     ->options(function (?Model $record, Closure $get) {
@@ -205,22 +213,29 @@ class InvoiceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('issue_date')
+                    ->label(__('invoices.issue_date'))
                     ->sortable()
                     ->dateTime('d/m/Y'),
-                Tables\Columns\TextColumn::make('number'),
+                Tables\Columns\TextColumn::make('number')
+                    ->label(__('invoices.invoice_number')),
                 Tables\Columns\TextColumn::make('company.name')
+                    ->label(__('invoices.company_name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('corporation.name')
+                    ->label(__('invoices.corporation'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('waybill.number')
+                    ->label(__('invoices.waybill'))
                     ->url(fn ($record) => $record->waybill_id ? route('filament.resources.waybills.view', $record->waybill_id) : null)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('with_holding.rate')
+                    ->label(__('invoices.withholding_tax'))
                     ->formatStateUsing(fn ($state) => "%$state"),
                 Tables\Columns\BadgeColumn::make('status')
+                    ->label(__('invoices.status'))
                     ->enum([
                         'pending' => 'Pending',
                         'delivered' => 'Delivered',
@@ -232,12 +247,14 @@ class InvoiceResource extends Resource
                         'danger' => 'cancelled',
                     ]),
                 Tables\Columns\TextColumn::make('discount')
+                    ->label(__('invoices.discount'))
                     ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol),
                 Tables\Columns\TextColumn::make('total')
+                    ->label(__('invoices.total'))
                     ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol),
                 Tables\Columns\TextColumn::make('invoice_payments_sum')
+                    ->label(__('invoices.payments'))
                     ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol)
-                    ->label('Payments')
                     ->sortable(),
             ])
             ->filters([
@@ -257,6 +274,21 @@ class InvoiceResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('invoices.invoice');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('invoices.invoices');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('invoices.invoices');
     }
 
     public static function getPages(): array

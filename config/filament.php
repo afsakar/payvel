@@ -333,7 +333,8 @@ return [
             SubstituteBindings::class,
             DispatchServingFilamentEvent::class,
             MirrorConfigToSubpackages::class,
-            CompanyCheck::class
+            CompanyCheck::class,
+            \Kenepa\TranslationManager\Http\Middleware\SetLanguage::class,
         ],
     ],
 

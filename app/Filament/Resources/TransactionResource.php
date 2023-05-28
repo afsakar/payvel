@@ -28,11 +28,14 @@ class TransactionResource extends Resource
             ->schema([
                 Grid::make(2)->schema([
                     Forms\Components\DatePicker::make('due_at')
+                        ->required()
+                        ->label(__('transactions.due_at'))
                         ->displayFormat('d/m/Y'),
                     Forms\Components\TextInput::make('amount')
+                        ->label(__('transactions.amount'))
                         ->required(),
                     Forms\Components\Select::make('from_account_id')
-                        ->label('Sender Account')
+                        ->label(__('transactions.from_account'))
                         ->reactive()
                         ->options(\App\Models\Account::query()->get()->pluck('name', 'id'))
                         ->afterStateUpdated(function ($state, Closure $set) {
@@ -40,22 +43,23 @@ class TransactionResource extends Resource
                             $currency_id = \App\Models\Account::query()->find($state)->currency_id;
                             $set('currency_id', $currency_id);
                         })
-                        ->placeholder('Select Account')
+                        ->placeholder(__('transactions.select_account'))
                         ->required(),
                     Forms\Components\Select::make('to_account_id')
-                        ->label('Sender Account')
+                        ->label(__('transactions.to_account'))
                         ->reactive()
-                        ->options(function (Closure $get) {
-                            return \App\Models\Account::query()->where('id', '!=', $get('from_account_id'))->where('currency_id', $get('currency_id'))->get()->pluck('name', 'id');
+                        ->options(function (Closure $get, $record) {
+                            return \App\Models\Account::query()->where('id', '!=', $record ? $record->from_account_id : $get('from_account_id'))->where('currency_id', $record ? $record->from_account_id : $get('currency_id'))->get()->pluck('name', 'id');
                         })
                         ->disabled(function (Closure $get) {
                             return !$get('from_account_id');
                         })
-                        ->placeholder('Select Account')
+                        ->placeholder(__('transactions.select_account'))
                         ->required(),
                 ]),
                 Grid::make(1)->schema([
                     Forms\Components\Textarea::make('description')
+                        ->label(__('transactions.description'))
                         ->rows(2)
                         ->required()
                         ->maxLength(255),
@@ -68,16 +72,20 @@ class TransactionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('due_at')
+                    ->label(__('transactions.due_at'))
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('amount')
+                    ->label(__('transactions.amount'))
                     ->formatStateUsing(fn ($record, $state) => $record->from_account->currency->position == 'left' ? $record->from_account->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->from_account->currency->symbol),
                 Tables\Columns\TextColumn::make('from_account.name')
-                    ->label('Sender')
+                    ->label(__('transactions.from_account'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('to_account.name')
-                    ->label('Receiver')
+                    ->label(__('transactions.to_account'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('description')
+                    ->label(__('transactions.description'))
+                    ->searchable(),
             ])
             ->filters([
                 //
@@ -90,6 +98,21 @@ class TransactionResource extends Resource
             ->bulkActions([
                 FilamentExportBulkAction::make('export')
             ]);
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('transactions.transaction');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('transactions.transactions');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('transactions.transactions');
     }
 
     public static function getPages(): array

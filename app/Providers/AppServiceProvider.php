@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Models\Company;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
 use Filament\Navigation\UserMenuItem;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,10 +29,9 @@ class AppServiceProvider extends ServiceProvider
             if (Company::find(session()->get('company_id'))) {
                 Filament::registerUserMenuItems([
                     UserMenuItem::make()
-                        ->label('Change Company ('. Company::find(session()->get('company_id'))->name .')')
+                        ->label(__('general.change_company', ['company' => Company::find(session()->get('company_id'))->name]))
                         ->url(route('company.change'))
                         ->icon('heroicon-o-refresh'),
-                    // ...
                 ]);
 
                 Filament::registerNavigationItems([
@@ -39,6 +40,11 @@ class AppServiceProvider extends ServiceProvider
                         ->sort(-2),
                 ]);
             }
+        });
+
+        Gate::define('use-translation-manager', function (?User $user) {
+            // Your authorization logic
+            return $user !== null;
         });
     }
 }

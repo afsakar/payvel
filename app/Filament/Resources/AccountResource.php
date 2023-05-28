@@ -3,13 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AccountResource\Pages;
-use App\Filament\Resources\AccountResource\RelationManagers;
 use App\Models\Account;
 use App\Models\AccountType;
 use Filament\Tables\Actions\Action;
 use App\Models\Currency;
 use Filament\Forms;
-use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -36,24 +34,27 @@ class AccountResource extends Resource
                     'sm' => 2,
                 ])->schema([
                     Forms\Components\Select::make('account_type_id')
-                        ->label('Account Type')
+                        ->label(__('accounts.account_type'))
                         ->options(AccountType::all()->pluck('name', 'id'))
                         ->searchable()
                         ->required(),
                     Forms\Components\Select::make('currency_id')
-                        ->label('Currency')
+                        ->label(__('accounts.currency'))
                         ->options(Currency::all()->pluck('name', 'id'))
                         ->searchable()
                         ->required(),
                     Forms\Components\TextInput::make('name')
+                        ->label(__('accounts.account_name'))
                         ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('starting_balance')
+                        ->label(__('accounts.starting_balance'))
                         ->required(),
                 ]),
                 Grid::make(1)->schema([
                     Forms\Components\Textarea::make('description')
+                        ->label(__('accounts.description'))
                         ->rows(2)
                         ->maxLength(255),
                 ])
@@ -65,17 +66,23 @@ class AccountResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('accounts.account_name'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('accountType.name'),
-                Tables\Columns\TextColumn::make('currency.code'),
-                Tables\Columns\TextColumn::make('balance'),
+                Tables\Columns\TextColumn::make('accountType.name')
+                    ->label(__('accounts.account_type'))
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('currency.code')
+                    ->label(__('accounts.currency'))
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('balance')
+                    ->label(__('accounts.balance')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Action::make('detail')
-                    ->label('Detail')
+                    ->label(__('accounts.detail'))
                     ->color('blue')
                     ->icon('heroicon-s-document')
                     ->url(function ($record) {
@@ -97,6 +104,21 @@ class AccountResource extends Resource
             'index' => Pages\ManageAccounts::route('/'),
             'detail' => Pages\AccountDetail::route('/{record}/detail'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('accounts.account');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('accounts.accounts');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('accounts.accounts');
     }
 
     public static function getEloquentQuery(): Builder

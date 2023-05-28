@@ -1,0 +1,25 @@
+<?php
+
+return [
+    "invoice" => "Satış Faturası",
+    "invoices" => "Satış Faturaları",
+    "invoice_number" => "Satış Faturası Numarası",
+    "issue_date" => "Satış Faturası Tarihi",
+    "company_name" => "Şirket Adı",
+    "corporation" => "Firma",
+    "waybill" => "İrsaliye",
+    "withholding_tax" => "Tevkifat",
+    "status" => "Durum",
+    "discount" => "İndirim",
+    "notes" => "Notlar",
+    "items" => "Ürünler",
+    "payments" => "Ödemeler",
+    "total" => "Toplam",
+    "material" => "Malzeme",
+    "quantity" => "Miktar",
+    "price" => "Fiyat",
+    "revenue" => "Alınan Ödemeler",
+    "delivered" => "Teslim Edildi",
+    "pending" => "Beklemede",
+    "cancelled" => "İptal Edildi",
+];

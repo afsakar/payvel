@@ -1,0 +1,25 @@
+<?php
+
+return [
+    "bill" => "Alış Faturası",
+    "bills" => "Alış Faturaları",
+    "bill_number" => "Alış Faturası Numarası",
+    "issue_date" => "Alış Faturası Tarihi",
+    "company_name" => "Şirket Adı",
+    "corporation" => "Firma",
+    "waybill" => "İrsaliye",
+    "withholding_tax" => "Tevkifat",
+    "status" => "Durum",
+    "discount" => "İndirim",
+    "notes" => "Notlar",
+    "items" => "Ürünler",
+    "payments" => "Ödemeler",
+    "total" => "Toplam",
+    "material" => "Malzeme",
+    "quantity" => "Miktar",
+    "price" => "Fiyat",
+    "expense" => "Yapılan Ödemeler",
+    "delivered" => "Teslim Edildi",
+    "pending" => "Beklemede",
+    "cancelled" => "İptal Edildi",
+];

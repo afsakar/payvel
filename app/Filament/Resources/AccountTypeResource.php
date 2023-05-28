@@ -26,6 +26,7 @@ class AccountTypeResource extends Resource
             ->schema([
                 Grid::make(1)->schema([
                     Forms\Components\TextInput::make('name')
+                        ->label(__('account_types.account_type_name'))
                         ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255)
@@ -38,6 +39,7 @@ class AccountTypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('account_types.account_type_name'))
                     ->searchable(),
             ])
             ->filters([
@@ -59,6 +61,21 @@ class AccountTypeResource extends Resource
         return [
             'index' => Pages\ManageAccountTypes::route('/'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('account_types.account_type');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('account_types.account_types');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('account_types.account_types');
     }
 
     public static function getEloquentQuery(): Builder

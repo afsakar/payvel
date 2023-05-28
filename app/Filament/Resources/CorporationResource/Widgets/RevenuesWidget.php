@@ -20,10 +20,10 @@ class RevenuesWidget extends BaseWidget
     {
         $corporation = Corporation::with('revenues')->find($this->corporationID);
 
-        $formalRevenues = Card::make('Total Formal Revenues', $this->formatMoney($corporation->total_formal_revenue));
-        $informalRevenues = Card::make('Total Informal Revenues', $this->formatMoney($corporation->total_informal_revenue));
-        $formalExpenses = Card::make('Total Formal Expenses', $this->formatMoney($corporation->total_formal_expense));
-        $informalExpenses = Card::make('Total Informal Expenses', $this->formatMoney($corporation->total_informal_expense));
+        $formalRevenues = Card::make(__('corporations.total_formal_revenue'), $this->formatMoney($corporation->total_formal_revenue));
+        $informalRevenues = Card::make(__('corporations.total_informal_revenue'), $this->formatMoney($corporation->total_informal_revenue));
+        $formalExpenses = Card::make(__('corporations.total_formal_expense'), $this->formatMoney($corporation->total_formal_expense));
+        $informalExpenses = Card::make(__('corporations.total_informal_expense'), $this->formatMoney($corporation->total_informal_expense));
 
         return [
             $formalRevenues,

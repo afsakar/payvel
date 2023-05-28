@@ -26,10 +26,12 @@ class TaxResource extends Resource
             ->schema([
                 Grid::make(1)->schema([
                     Forms\Components\TextInput::make('name')
+                        ->label(__('taxes.name'))
                         ->unique(ignoreRecord: true)
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('rate')
+                        ->label(__('taxes.rate'))
                         ->required(),
                 ]),
             ]);
@@ -39,8 +41,13 @@ class TaxResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('rate'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label(__('taxes.name'))
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('rate')
+                    ->label(__('taxes.rate'))
+                    ->formatStateUsing(fn ($state) => '%' . $state),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -61,6 +68,21 @@ class TaxResource extends Resource
         return [
             'index' => Pages\ManageTaxes::route('/'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('taxes.tax');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('taxes.taxes');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('taxes.taxes');
     }
 
     public static function getEloquentQuery(): Builder

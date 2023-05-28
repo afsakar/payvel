@@ -29,22 +29,31 @@ class RevenueTable extends Component implements Tables\Contracts\HasTable
     {
         return [
             Tables\Columns\TextColumn::make('due_at')
-                ->label('Date')
+                ->label(__('revenues.due_at'))
                 ->sortable()
                 ->dateTime('d/m/Y'),
             Tables\Columns\TextColumn::make('description')
+                ->label(__('revenues.description'))
                 ->searchable(),
             Tables\Columns\TextColumn::make('company.name')
                 ->searchable()
-                ->label('Company'),
+                ->label(__('revenues.company_name')),
             Tables\Columns\TextColumn::make('corporation.name')
                 ->searchable()
-                ->label('Corporation'),
+                ->label(__('revenues.corporation')),
             Tables\Columns\TextColumn::make('amount_with_currency')
-                ->label('Amount')
+                ->label(__('revenues.amount'))
                 ->sortable(),
-            Tables\Columns\TextColumn::make('type')
-                ->label('Type')
+            Tables\Columns\BadgeColumn::make('type')
+                ->label(__('revenues.type'))
+                ->enum([
+                    'formal' => __('revenues.formal'),
+                    'informal' => __('revenues.informal'),
+                ])
+                ->colors([
+                    'primary',
+                    'secondary' => 'informal',
+                ])
                 ->sortable(),
         ];
     }
@@ -58,11 +67,11 @@ class RevenueTable extends Component implements Tables\Contracts\HasTable
                         ->default(Carbon::now()->subYear())
                         ->closeOnDateSelection()
                         ->timezone('Europe/Istanbul')
-                        ->label('From Date'),
+                        ->label(__('general.from_date')),
                     Forms\Components\DatePicker::make('due_until')
                         ->closeOnDateSelection()
                         ->timezone('Europe/Istanbul')
-                        ->label('To Date')
+                        ->label(__('general.to_date')),
                 ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
@@ -78,9 +87,9 @@ class RevenueTable extends Component implements Tables\Contracts\HasTable
             Filter::make('amount')
                 ->form([
                     Forms\Components\TextInput::make('min_amount')
-                        ->label('Min Amount'),
+                        ->label(__('general.min_amount')),
                     Forms\Components\TextInput::make('max_amount')
-                        ->label('Max Amount')
+                        ->label(__('general.max_amount')),
                 ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query

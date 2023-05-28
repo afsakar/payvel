@@ -24,25 +24,30 @@ class CurrencyResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->unique(ignoreRecord: true)
+                    ->label(__('currencies.name'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('code')
+                    ->label(__('currencies.code'))
                     ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(3),
                 Forms\Components\TextInput::make('symbol')
+                    ->label(__('currencies.symbol'))
                     ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(3),
                 Forms\Components\Select::make('position')
+                    ->label(__('currencies.position'))
                     ->required()
                     ->options([
-                        'left' => 'Left',
-                        'right' => 'Right',
+                        'left' => __('currencies.left'),
+                        'right' => __('currencies.right'),
                     ])
                     ->disablePlaceholderSelection()
                     ->searchable()
-                    ->placeholder('Select position'),
+                    ->placeholder(__('currencies.select_position')),
             ]);
     }
 
@@ -51,12 +56,15 @@ class CurrencyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                ->label(__('currencies.name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('code')
+                    ->label(__('currencies.code'))
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('symbol'),
+                Tables\Columns\TextColumn::make('symbol')
+                    ->label(__('currencies.symbol')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -77,6 +85,21 @@ class CurrencyResource extends Resource
         return [
             'index' => Pages\ManageCurrencies::route('/'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('currencies.currency');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('currencies.currencies');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('currencies.currencies');
     }
 
     public static function getEloquentQuery(): Builder

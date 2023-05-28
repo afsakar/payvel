@@ -1,0 +1,25 @@
+<?php
+
+return [
+    "invoice" => "Invoice",
+    "invoices" => "Invoices",
+    "invoice_number" => "Invoice Number",
+    "issue_date" => "Issue Date",
+    "company_name" => "Company Name",
+    "corporation" => "Corporation",
+    "waybill" => "Waybill",
+    "withholding_tax" => "Withholding Tax",
+    "status" => "Status",
+    "discount" => "Discount",
+    "notes" => "Notes",
+    "items" => "Items",
+    "payments" => "Payments",
+    "total" => "Total",
+    "material" => "Material",
+    "quantity" => "Quantity",
+    "price" => "Price",
+    "revenue" => "Revenue",
+    "delivered" => "Delivered",
+    "pending" => "Pending",
+    "cancelled" => "Cancelled",
+];
