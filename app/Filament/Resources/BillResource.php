@@ -214,7 +214,7 @@ class BillResource extends Resource
                     ->sortable()
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('number')
-                    ->label(__('bills.number'))
+                    ->label(__('bills.bill_number'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('company.name')
