@@ -22,7 +22,7 @@ class CheckTable extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return Check::query()->where('corporation_id', $this->corporationID);
+        return Check::query()->where('corporation_id', $this->corporationID)->where('company_id', session()->get('company_id'));
     }
 
     protected function getTableColumns(): array
@@ -86,4 +86,3 @@ class CheckTable extends Component implements Tables\Contracts\HasTable
         return view('livewire.corporation.check-table');
     }
 }
-
