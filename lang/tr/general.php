@@ -11,4 +11,5 @@ return [
     "company_change" => "Şirket Değiştir",
     "submit" => "Gönder",
     "continue" => "Devam Et",
+    "selected_company" => "Seçili Şirket",
 ];

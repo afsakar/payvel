@@ -11,4 +11,5 @@ return [
     "company_change" => "Change Company",
     "submit" => "Submit",
     "continue" => "Continue",
+    "selected_company" => "Selected Company",
 ];
