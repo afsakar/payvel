@@ -23,6 +23,8 @@ class Account extends Model
     protected $appends = [
         'balance',
         'has_any_relation',
+        'paid_sale_checks',
+        'paid_purchase_checks',
     ];
 
     public function accountType()
@@ -57,7 +59,7 @@ class Account extends Model
 
     public function getBalanceAttribute()
     {
-        $balance = $this->starting_balance + $this->revenues()->sum('amount') - $this->expenses()->sum('amount') + $this->incomingTransactions()->sum('amount') - $this->outgoingTransactions()->sum('amount');
+        $balance = $this->starting_balance + $this->revenues()->sum('amount') - $this->expenses()->sum('amount') + $this->incomingTransactions()->sum('amount') - $this->outgoingTransactions()->sum('amount') - $this->paidSaleChecks()->sum('amount') + $this->paidPurchaseChecks()->sum('amount');
 
         if ($this->currency->position == 'right') {
             return number_format($balance, 2) . ' ' . $this->currency->symbol;
@@ -68,6 +70,41 @@ class Account extends Model
 
     public function getHasAnyRelationAttribute()
     {
-        return $this->revenues()->count() > 0 || $this->expenses()->count() > 0 || $this->incomingTransactions()->count() > 0 || $this->outgoingTransactions()->count() > 0;
+        return $this->revenues()->count() > 0 || $this->expenses()->count() > 0 || $this->incomingTransactions()->count() > 0 || $this->outgoingTransactions()->count() > 0 || $this->checks()->count() > 0;
+    }
+
+    public function checks()
+    {
+        return $this->hasMany(Check::class);
+    }
+
+    public function purchaseChecks()
+    {
+        return $this->checks()->where('type', 'purchase');
+    }
+
+    public function saleChecks()
+    {
+        return $this->checks()->where('type', 'sale');
+    }
+
+    public function paidSaleChecks()
+    {
+        return $this->saleChecks()->where('status', 'paid');
+    }
+
+    public function paidPurchaseChecks()
+    {
+        return $this->purchaseChecks()->where('status', 'paid');
+    }
+
+    public function getPaidSaleChecksAttribute()
+    {
+        return $this->paidSaleChecks()->sum('amount');
+    }
+
+    public function getPaidPurchaseChecksAttribute()
+    {
+        return $this->paidPurchaseChecks()->sum('amount');
     }
 }

@@ -24,8 +24,13 @@ class Category extends Model
         return $this->hasMany(Revenue::class);
     }
 
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
+
     public function getHasAnyRelationAttribute()
     {
-        return $this->revenues->count() > 0;
+        return $this->revenues->count() > 0 || $this->expenses->count() > 0;
     }
 }

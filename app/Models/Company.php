@@ -57,8 +57,23 @@ class Company extends Model
         return $this->hasMany(Expense::class);
     }
 
+    public function checks()
+    {
+        return $this->hasMany(Check::class);
+    }
+
+    public function purchaseChecks()
+    {
+        return $this->checks()->where('type', 'purchase');
+    }
+
+    public function saleChecks()
+    {
+        return $this->checks()->where('type', 'sale');
+    }
+
     public function getHasAnyRelationAttribute()
     {
-        return $this->agreements->count() > 0 || $this->waybills->count() > 0 || $this->invoices->count() > 0 || $this->bills->count() > 0 || $this->revenues->count() > 0 || $this->expenses->count() > 0;
+        return $this->agreements->count() > 0 || $this->waybills->count() > 0 || $this->invoices->count() > 0 || $this->bills->count() > 0 || $this->revenues->count() > 0 || $this->expenses->count() > 0 || $this->checks->count() > 0;
     }
 }

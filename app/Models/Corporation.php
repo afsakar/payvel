@@ -26,6 +26,10 @@ class Corporation extends Model
 
     protected $appends = [
         'has_any_relation',
+        'paid_sale_checks',
+        'paid_purchase_checks',
+        'unpaid_sale_checks',
+        'unpaid_purchase_checks',
     ];
 
     public function currency()
@@ -63,9 +67,66 @@ class Corporation extends Model
         return $this->hasMany(Expense::class);
     }
 
+    public function checks()
+    {
+        return $this->hasMany(Check::class);
+    }
+
+    public function purchaseChecks()
+    {
+        return $this->checks()->where('type', 'purchase');
+    }
+
+    public function saleChecks()
+    {
+        return $this->checks()->where('type', 'sale');
+    }
+
+
+    public function unpaidSaleChecks()
+    {
+        return $this->saleChecks()->where('status', '!=', 'paid');
+    }
+
+    public function unpaidPurchaseChecks()
+    {
+        return $this->purchaseChecks()->where('status', '!=', 'paid');
+    }
+
+    public function getUnpaidPurchaseChecksAttribute()
+    {
+        return $this->unpaidPurchaseChecks()->sum('amount');
+    }
+
+    public function getUnpaidSaleChecksAttribute()
+    {
+        return $this->unpaidSaleChecks()->sum('amount');
+    }
+
+
+    public function paidSaleChecks()
+    {
+        return $this->saleChecks()->where('status', 'paid');
+    }
+
+    public function paidPurchaseChecks()
+    {
+        return $this->purchaseChecks()->where('status', 'paid');
+    }
+
+    public function getPaidSaleChecksAttribute()
+    {
+        return $this->paidSaleChecks()->sum('amount');
+    }
+
+    public function getPaidPurchaseChecksAttribute()
+    {
+        return $this->paidPurchaseChecks()->sum('amount');
+    }
+
     public function getHasAnyRelationAttribute()
     {
-        return $this->agreements()->count() > 0 || $this->waybills()->count() > 0 || $this->invoices()->count() > 0 || $this->bills()->count() > 0 || $this->revenues()->count() > 0 || $this->expenses()->count() > 0;
+        return $this->agreements()->count() > 0 || $this->waybills()->count() > 0 || $this->invoices()->count() > 0 || $this->bills()->count() > 0 || $this->revenues()->count() > 0 || $this->expenses()->count() > 0 || $this->checks()->count() > 0;
     }
 
     public function getTotalFormalRevenueAttribute()

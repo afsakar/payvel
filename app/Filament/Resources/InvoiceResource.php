@@ -93,9 +93,9 @@ class InvoiceResource extends Resource
                     Forms\Components\Select::make('status')
                         ->label(__('invoices.status'))
                         ->options([
-                            'pending' => 'Pending',
-                            'delivered' => 'Delivered',
-                            'cancelled' => 'Cancelled',
+                            'pending' => __('invoices.pending'),
+                            'delivered' => __('invoices.delivered'),
+                            'cancelled' => __('invoices.cancelled'),
                         ])
                         ->required(),
                     Forms\Components\TextInput::make('discount')
@@ -237,9 +237,9 @@ class InvoiceResource extends Resource
                 Tables\Columns\BadgeColumn::make('status')
                     ->label(__('invoices.status'))
                     ->enum([
-                        'pending' => 'Pending',
-                        'delivered' => 'Delivered',
-                        'cancelled' => 'Cancelled',
+                        'pending' => __('invoices.pending'),
+                        'delivered' => __('invoices.delivered'),
+                        'cancelled' => __('invoices.cancelled'),
                     ])
                     ->colors([
                         'primary' => 'pending',

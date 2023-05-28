@@ -14,4 +14,6 @@
     <livewire:account.expense-table :accountID="$record" />
     <h2 class="text-xl">{{ __('transactions.transactions') }}</h2>
     <livewire:account.transaction-table :accountID="$record" />
+    <h2 class="text-xl">{{ __('checks.checks') }}</h2>
+    <livewire:account.check-table :accountID="$record" />
 </x-filament::page>

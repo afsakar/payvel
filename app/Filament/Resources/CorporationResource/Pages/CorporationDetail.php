@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\CorporationResource\Pages;
 
 use App\Filament\Resources\CorporationResource;
+use App\Filament\Resources\CorporationResource\Widgets\ChecksWidget;
 use App\Filament\Resources\CorporationResource\Widgets\InvoicesWidget;
 use App\Filament\Resources\CorporationResource\Widgets\RevenuesWidget;
 use App\Models\Corporation;
@@ -33,6 +34,7 @@ class CorporationDetail extends Page implements Tables\Contracts\HasTable
         return [
             RevenuesWidget::class,
             InvoicesWidget::class,
+            ChecksWidget::class,
         ];
     }
 
