@@ -20,10 +20,9 @@ class AccountDetail extends Page implements Tables\Contracts\HasTable
 
     public $account;
 
-    public function mount($record)
+    public function mount()
     {
-        $this->record = $record;
-        $this->account = Account::find($record);
+        $this->account = Account::find($this->record);
     }
 
     protected function getActions(): array

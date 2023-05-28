@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "transaction" => "İşlem",
-    "transactions" => "İşlemler",
+    "transaction" => "Transfer",
+    "transactions" => "Transferler",
     "due_at" => "Ödeme Tarihi",
     "amount" => "Tutar",
     "from_account" => "Gönderen Hesap",

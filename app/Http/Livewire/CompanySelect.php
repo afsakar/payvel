@@ -18,7 +18,7 @@ class CompanySelect extends Component implements Forms\Contracts\HasForms
     {
         return [
             Forms\Components\Select::make('company_id')
-                ->label('Company')
+                ->label(__('companies.company'))
                 ->reactive()
                 ->options(\App\Models\Company::pluck('name', 'id'))
                 ->afterStateUpdated(function ($state) {

@@ -8,4 +8,7 @@ return [
     "view" => "Görüntüle",
     "min_amount" => "Min Tutar",
     "max_amount" => "Max Tutar",
+    "company_change" => "Şirket Değiştir",
+    "submit" => "Gönder",
+    "continue" => "Devam Et",
 ];

@@ -20,6 +20,8 @@ class TransactionTable extends Component implements Tables\Contracts\HasTable
 
     public $accountID;
 
+    public $record;
+
     protected function getTableQuery(): Builder
     {
         $incoming = Transaction::query()->where('to_account_id', $this->accountID);
@@ -31,20 +33,21 @@ class TransactionTable extends Component implements Tables\Contracts\HasTable
     {
         return [
             Tables\Columns\TextColumn::make('due_at')
-                ->label('Date')
+                ->label(__('transactions.due_at'))
                 ->sortable()
                 ->dateTime('d/m/Y'),
             Tables\Columns\TextColumn::make('description')
+                ->label(__('transactions.description'))
                 ->searchable(),
             Tables\Columns\TextColumn::make('from_account.name')
                 ->searchable()
-                ->label('Sender Account'),
+                ->label(__('transactions.from_account')),
             Tables\Columns\TextColumn::make('to_account.name')
                 ->searchable()
-                ->label('Receiver Account'),
+                ->label(__('transactions.to_account')),
             Tables\Columns\TextColumn::make('amount_with_currency')
-                ->label('Amount')
-                ->formatStateUsing(fn (?Model $record, $state) => $record->from_account_id !== $this->accountID ? '-' . $state : $state)
+                ->label(__('transactions.amount'))
+                ->formatStateUsing(fn ($record, $state) => $record->from_account->id == $this->accountID ? '-' . $state : $state)
         ];
     }
 

@@ -8,4 +8,7 @@ return [
     "view" => "View",
     "min_amount" => "Min Amount",
     "max_amount" => "Max Amount",
+    "company_change" => "Change Company",
+    "submit" => "Submit",
+    "continue" => "Continue",
 ];

@@ -9,14 +9,14 @@
         ])>
             <div>
                 <h2 class="font-bold tracking-tight text-center text-2xl">
-                    Change Company
+                    {{ __('general.company_change') }}
                 </h2>
             </div>
 
             {{ $this->form }}
 
             <x-filament::button type="submit" class="w-full">
-                {{ __('Submit') }}
+                {{ __('general.continue') }}
             </x-filament::button>
         </form>
     </div>
