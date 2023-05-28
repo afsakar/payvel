@@ -74,23 +74,23 @@ class Corporation extends Model
 
     public function purchaseChecks()
     {
-        return $this->checks()->where('type', 'purchase');
+        return $this->checks()->where('type', 'purchase')->where('company_id', session()->get('company_id'));
     }
 
     public function saleChecks()
     {
-        return $this->checks()->where('type', 'sale');
+        return $this->checks()->where('type', 'sale')->where('company_id', session()->get('company_id'));
     }
 
 
     public function unpaidSaleChecks()
     {
-        return $this->saleChecks()->where('status', '!=', 'paid');
+        return $this->saleChecks()->where('status', '!=', 'paid')->where('company_id', session()->get('company_id'));
     }
 
     public function unpaidPurchaseChecks()
     {
-        return $this->purchaseChecks()->where('status', '!=', 'paid');
+        return $this->purchaseChecks()->where('status', '!=', 'paid')->where('company_id', session()->get('company_id'));
     }
 
     public function getUnpaidPurchaseChecksAttribute()
@@ -106,12 +106,12 @@ class Corporation extends Model
 
     public function paidSaleChecks()
     {
-        return $this->saleChecks()->where('status', 'paid');
+        return $this->saleChecks()->where('status', 'paid')->where('company_id', session()->get('company_id'));
     }
 
     public function paidPurchaseChecks()
     {
-        return $this->purchaseChecks()->where('status', 'paid');
+        return $this->purchaseChecks()->where('status', 'paid')->where('company_id', session()->get('company_id'));
     }
 
     public function getPaidSaleChecksAttribute()
