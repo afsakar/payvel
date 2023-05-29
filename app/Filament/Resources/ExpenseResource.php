@@ -153,6 +153,8 @@ class ExpenseResource extends Resource
             ])
             ->bulkActions([
                 FilamentExportBulkAction::make('export')
+                ->pageOrientationFieldLabel(__('general.page_orientation'))
+                ->defaultPageOrientation('landscape')
             ]);
     }
 

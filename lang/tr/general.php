@@ -12,4 +12,7 @@ return [
     "submit" => "Gönder",
     "continue" => "Devam Et",
     "selected_company" => "Seçili Şirket",
+    "settings" => "Ayarlar",
+    "download" => "İndir",
+    "page_orientation" => "Sayfa Yönü",
 ];

@@ -20,6 +20,8 @@ class AccountTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-menu-alt-2';
 
+    protected static ?string $navigationGroup = 'Settings';
+
     public static function form(Form $form): Form
     {
         return $form

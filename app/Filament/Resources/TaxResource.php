@@ -20,6 +20,8 @@ class TaxResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-receipt-tax';
 
+    protected static ?string $navigationGroup = 'Settings';
+
     public static function form(Form $form): Form
     {
         return $form

@@ -19,6 +19,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use Filament\Forms\Components\FileUpload;
+use Filament\Pages\Actions;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Storage;
 
 class CheckResource extends Resource
 {
@@ -41,6 +45,8 @@ class CheckResource extends Resource
                         ->maxSize(10240)
                         ->nullable()
                         ->image()
+                        ->disk('public')
+                        ->visibility('public')
                         ->directory('checks')
                 ]),
                 Grid::make(2)->schema([
@@ -213,6 +219,13 @@ class CheckResource extends Resource
                     }),
             ])
             ->actions([
+                Tables\Actions\Action::make('download')
+                    ->label(__('general.download'))
+                    ->icon('heroicon-o-download')
+                    ->action(function ($record) {
+                        return Storage::disk('public')->download($record->image, Carbon::parse($record->due_date)->format('d-m-Y') . " " . $record->corporation->name);
+                    })
+                    ->hidden(fn ($record) => !$record->image),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
                     ->after(function ($record) {
@@ -220,11 +233,31 @@ class CheckResource extends Resource
                             $record->paid_date = null;
                             $record->save();
                         }
+                    })
+                    ->before(function ($record, Request $request) {
+                        if ($record->image != $request->image) {
+                            Storage::disk('public')->delete($record->image);
+                            $record->image = Storage::url($record->image);
+                        } else {
+                            if ($record->image) {
+                                Storage::disk('public')->delete($record->image);
+                                $record->image = null;
+                            }
+                        }
+
+                        $record->save();
                     }),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->before(function ($record) {
+                        if ($record->image != null) {
+                            Storage::disk('public')->delete($record->image);
+                        }
+                    }),
             ])
             ->bulkActions([
                 FilamentExportBulkAction::make('export')
+                    ->pageOrientationFieldLabel(__('general.page_orientation'))
+                    ->defaultPageOrientation('landscape')
             ]);
     }
 

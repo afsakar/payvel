@@ -12,4 +12,7 @@ return [
     "submit" => "Submit",
     "continue" => "Continue",
     "selected_company" => "Selected Company",
+    "settings" => "Settings",
+    "download" => "Download",
+    "page_orientation" => "Page Orientation",
 ];

@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Filament\Facades\Filament;
+use Filament\Navigation\NavigationGroup;
 use Filament\Navigation\NavigationItem;
 use Filament\Navigation\UserMenuItem;
 use Illuminate\Support\Facades\Gate;
@@ -38,6 +39,12 @@ class AppServiceProvider extends ServiceProvider
                     NavigationItem::make(Company::find(session()->get('company_id'))->name)
                         ->icon('heroicon-o-office-building')
                         ->sort(-2),
+                ]);
+                Filament::registerNavigationGroups([
+                    NavigationGroup::make()
+                        ->label(__('general.settings'))
+                        ->icon('heroicon-o-cog')
+                        ->collapsed(),
                 ]);
             }
         });

@@ -102,7 +102,9 @@ class RevenueTable extends Component implements Tables\Contracts\HasTable
     protected function getTableBulkActions(): array
     {
         return [
-            FilamentExportBulkAction::make('Export'),
+            FilamentExportBulkAction::make('Export')
+                ->pageOrientationFieldLabel(__('general.page_orientation'))
+                ->defaultPageOrientation('landscape'),
         ];
     }
 
