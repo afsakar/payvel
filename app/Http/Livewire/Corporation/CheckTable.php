@@ -69,7 +69,7 @@ class CheckTable extends Component implements Tables\Contracts\HasTable
                 ]),
             Tables\Columns\TextColumn::make('amount_with_currency')
                 ->label(__('checks.amount'))
-                ->formatStateUsing(fn ($record, $state) => $record->type === 'purchase' ? $state : '-' . $state)
+                ->formatStateUsing(fn ($record, $state) => $record->type != 'purchase' ? $state : '-' . $state)
                 ->sortable(),
         ];
     }

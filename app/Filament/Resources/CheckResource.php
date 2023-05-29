@@ -149,6 +149,16 @@ class CheckResource extends Resource
                 Tables\Columns\TextColumn::make('paid_date')
                     ->label(__('checks.paid_date'))
                     ->dateTime('d/m/Y'),
+                Tables\Columns\BadgeColumn::make('type')
+                    ->label(__('checks.type'))
+                    ->enum([
+                        'purchase' => __('checks.purchase'),
+                        'sale' => __('checks.sale'),
+                    ])
+                    ->colors([
+                        'success' => 'purchase',
+                        'danger' => 'sale',
+                    ]),
                 Tables\Columns\BadgeColumn::make('status')
                     ->label(__('checks.status'))
                     ->enum([
