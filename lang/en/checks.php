@@ -21,4 +21,5 @@ return [
     "paid_date" => "Paid Date",
     "check_in" => "Check In",
     "check_out" => "Check Out",
+    "image" => "Check Image",
 ];

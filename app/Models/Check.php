@@ -21,6 +21,7 @@ class Check extends Model
         'paid_date',
         'type',
         'status',
+        'image',
     ];
 
     protected $casts = [

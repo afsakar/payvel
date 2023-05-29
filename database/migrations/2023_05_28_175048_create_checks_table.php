@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamp('paid_date')->nullable();
             $table->string('type');
             $table->string('status');
+            $table->string('image')->nullable();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete(null);
             $table->foreign('company_id')->references('id')->on('companies')->onDelete(null);
             $table->foreign('corporation_id')->references('id')->on('corporations')->onDelete(null);

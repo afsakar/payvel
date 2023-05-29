@@ -13,7 +13,13 @@ class ManageChecks extends ManageRecords
     protected function getActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->after(function ($record) {
+                    if ($record->status != 'paid') {
+                        $record->paid_date = null;
+                        $record->save();
+                    }
+                }),
         ];
     }
 }

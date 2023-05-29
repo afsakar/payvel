@@ -21,4 +21,5 @@ return [
     "paid_date" => "Ödeme Tarihi",
     "check_in" => "Alınan Çekler",
     "check_out" => "Verilen Çekler",
+    "image" => "Çek Görüntüsü",
 ];

@@ -22,8 +22,8 @@ class ChecksWidget extends BaseWidget
         $paidPurchaseChecks = Card::make(__('checks.check_in'), $this->formatMoney($corporation->paid_purchase_checks));
 
         return [
-            $paidSaleChecks,
             $paidPurchaseChecks,
+            $paidSaleChecks,
         ];
     }
 

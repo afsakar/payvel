@@ -18,6 +18,7 @@ use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
+use Filament\Forms\Components\FileUpload;
 
 class CheckResource extends Resource
 {
@@ -29,6 +30,19 @@ class CheckResource extends Resource
     {
         return $form
             ->schema([
+                Grid::make(1)->schema([
+                    FileUpload::make('image')
+                        ->imagePreviewHeight('150')
+                        ->loadingIndicatorPosition('left')
+                        ->panelAspectRatio('2:1')
+                        ->panelLayout('integrated')
+                        ->label(__('checks.image'))
+                        ->image()
+                        ->maxSize(10240)
+                        ->nullable()
+                        ->image()
+                        ->directory('checks')
+                ]),
                 Grid::make(2)->schema([
                     Forms\Components\TextInput::make('number')
                         ->unique(ignoreRecord: true)
@@ -91,6 +105,7 @@ class CheckResource extends Resource
                 Grid::make(1)->schema([
                     Forms\Components\Select::make('status')
                         ->label(__('checks.status'))
+                        ->reactive()
                         ->afterStateUpdated(function ($state, Closure $set) {
                             $set('status', $state);
                         })
@@ -102,10 +117,15 @@ class CheckResource extends Resource
                         ->required(),
                     Forms\Components\DatePicker::make('paid_date')
                         ->minDate(now()->subDay())
+                        ->default(null)
                         ->required(function (Closure $get) {
                             return $get('status') == 'paid';
                         })
                         ->label(__('checks.paid_date'))
+                        ->closeOnDateSelection()
+                        ->disabled(function (Closure $get) {
+                            return $get('status') != 'paid';
+                        })
                         ->displayFormat('d/m/Y'),
                     Forms\Components\Textarea::make('description')
                         ->required()
@@ -118,6 +138,10 @@ class CheckResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image')
+                    ->label(__('checks.image'))
+                    ->height('auto')
+                    ->width('80px'),
                 Tables\Columns\TextColumn::make('due_date')
                     ->label(__('checks.due_date'))
                     ->sortable()
@@ -180,7 +204,13 @@ class CheckResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->after(function ($record) {
+                        if ($record->status != 'paid') {
+                            $record->paid_date = null;
+                            $record->save();
+                        }
+                    }),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

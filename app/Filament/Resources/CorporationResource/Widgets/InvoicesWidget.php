@@ -22,8 +22,8 @@ class InvoicesWidget extends BaseWidget
         $billTotal = Card::make(__('corporations.bill_total'), $this->formatMoney($corporation->bill_total));
 
         return [
-            $invoiceTotal,
             $billTotal,
+            $invoiceTotal,
         ];
     }
 
