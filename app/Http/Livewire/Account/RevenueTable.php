@@ -50,29 +50,8 @@ class RevenueTable extends Component implements Tables\Contracts\HasTable
     protected function getTableFilters(): array
     {
         return [
-            Filter::make('due_at')
-                ->form([
-                    Forms\Components\DatePicker::make('due_from')
-                        ->default(Carbon::now()->subYear())
-                        ->closeOnDateSelection()
-                        ->timezone('Europe/Istanbul')
-                        ->label(__('general.from_date')),
-                    Forms\Components\DatePicker::make('due_until')
-                        ->closeOnDateSelection()
-                        ->timezone('Europe/Istanbul')
-                        ->label(__('general.to_date')),
-                ])
-                ->query(function (Builder $query, array $data): Builder {
-                    return $query
-                        ->when(
-                            $data['due_from'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('due_at', '>=', $date),
-                        )
-                        ->when(
-                            $data['due_until'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('due_at', '<=', $date),
-                        );
-                }),
+            \Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter::make('due_at')
+                ->label(__('revenues.due_at')),
             Filter::make('amount')
                 ->form([
                     Forms\Components\TextInput::make('min_amount')

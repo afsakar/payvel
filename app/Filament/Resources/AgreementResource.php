@@ -93,6 +93,8 @@ class AgreementResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                \Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter::make('date')
+                    ->label(__('agreements.date'))
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

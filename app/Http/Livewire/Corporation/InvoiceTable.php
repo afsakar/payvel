@@ -71,29 +71,8 @@ class InvoiceTable extends Component implements Tables\Contracts\HasTable
     protected function getTableFilters(): array
     {
         return [
-            Filter::make('issue_date')
-                ->form([
-                    Forms\Components\DatePicker::make('due_from')
-                        ->default(Carbon::now()->subYear())
-                        ->closeOnDateSelection()
-                        ->timezone('Europe/Istanbul')
-                        ->label(__('general.from_date')),
-                    Forms\Components\DatePicker::make('due_until')
-                        ->closeOnDateSelection()
-                        ->timezone('Europe/Istanbul')
-                        ->label(__('general.to_date')),
-                ])
-                ->query(function (Builder $query, array $data): Builder {
-                    return $query
-                        ->when(
-                            $data['due_from'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('issue_date', '>=', $date),
-                        )
-                        ->when(
-                            $data['due_until'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('issue_date', '<=', $date),
-                        );
-                }),
+            \Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter::make('issue_date')
+                ->label(__('invoices.issue_date')),
         ];
     }
 

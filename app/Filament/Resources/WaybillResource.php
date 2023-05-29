@@ -163,6 +163,8 @@ class WaybillResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                \Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter::make('due_date')
+                    ->label(__('waybills.due_date'))
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

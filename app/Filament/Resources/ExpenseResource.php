@@ -144,6 +144,8 @@ class ExpenseResource extends Resource
             ])
             ->filters([
                 //
+                \Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter::make('due_at')
+                    ->label(__('expenses.due_at'))
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -153,8 +155,8 @@ class ExpenseResource extends Resource
             ])
             ->bulkActions([
                 FilamentExportBulkAction::make('export')
-                ->pageOrientationFieldLabel(__('general.page_orientation'))
-                ->defaultPageOrientation('landscape')
+                    ->pageOrientationFieldLabel(__('general.page_orientation'))
+                    ->defaultPageOrientation('landscape')
             ]);
     }
 

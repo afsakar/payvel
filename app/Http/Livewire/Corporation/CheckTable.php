@@ -74,6 +74,14 @@ class CheckTable extends Component implements Tables\Contracts\HasTable
         ];
     }
 
+    protected function getTableFilters(): array
+    {
+        return [
+            \Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter::make('due_date')
+                ->label(__('checks.due_date')),
+        ];
+    }
+
     protected function getTableBulkActions(): array
     {
         return [

@@ -258,6 +258,8 @@ class BillResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                \Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter::make('issue_date')
+                    ->label(__('bills.issue_date'))
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -265,8 +267,8 @@ class BillResource extends Resource
             ])
             ->bulkActions([
                 FilamentExportBulkAction::make('export')
-                ->pageOrientationFieldLabel(__('general.page_orientation'))
-                ->defaultPageOrientation('landscape')
+                    ->pageOrientationFieldLabel(__('general.page_orientation'))
+                    ->defaultPageOrientation('landscape')
             ]);
     }
 

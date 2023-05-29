@@ -259,6 +259,8 @@ class InvoiceResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                \Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter::make('issue_date')
+                    ->label(__('invoices.issue_date'))
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -266,8 +268,8 @@ class InvoiceResource extends Resource
             ])
             ->bulkActions([
                 FilamentExportBulkAction::make('export')
-                ->pageOrientationFieldLabel(__('general.page_orientation'))
-                ->defaultPageOrientation('landscape')
+                    ->pageOrientationFieldLabel(__('general.page_orientation'))
+                    ->defaultPageOrientation('landscape')
             ]);
     }
 

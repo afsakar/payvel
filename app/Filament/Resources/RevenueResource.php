@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Routing\Route;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class RevenueResource extends Resource
 {
@@ -110,7 +111,7 @@ class RevenueResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('due_at')
-                ->label(__('revenues.due_at'))
+                    ->label(__('revenues.due_at'))
                     ->sortable()
                     ->dateTime('d/m/Y'),
                 Tables\Columns\TextColumn::make('amount')
@@ -148,6 +149,8 @@ class RevenueResource extends Resource
             ])
             ->filters([
                 //
+                DateRangeFilter::make('due_at')
+                    ->label(__('revenues.due_at'))
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

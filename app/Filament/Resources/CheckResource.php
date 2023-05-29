@@ -199,6 +199,8 @@ class CheckResource extends Resource
                     ->dateTime('d/m/Y'),
             ])
             ->filters([
+                \Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter::make('due_date')
+                    ->label(__('checks.due_date')),
                 Filter::make('amount')
                     ->form([
                         Forms\Components\TextInput::make('min_amount')
