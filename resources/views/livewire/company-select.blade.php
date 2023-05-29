@@ -7,6 +7,7 @@
             'p-8 space-y-8 bg-white/50 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-2xl relative',
             'dark:bg-gray-900/50 dark:border-gray-700' => config('filament.dark_mode'),
         ])>
+
             <div>
                 <h2 class="font-bold tracking-tight text-center text-2xl">
                     {{ __('general.company_change') }}
