@@ -30,6 +30,7 @@ class Corporation extends Model
         'paid_purchase_checks',
         'unpaid_sale_checks',
         'unpaid_purchase_checks',
+        'total',
     ];
 
     public function currency()
@@ -173,5 +174,10 @@ class Corporation extends Model
         }
 
         return $total;
+    }
+
+    public function getTotalAttribute()
+    {
+        return $this->getTotalFormalRevenueAttribute() - $this->getTotalFormalExpenseAttribute() - $this->getPaidSaleChecksAttribute() + $this->getPaidPurchaseChecksAttribute();
     }
 }

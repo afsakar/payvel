@@ -19,10 +19,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Pages\Actions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class CheckResource extends Resource
 {
@@ -35,7 +37,7 @@ class CheckResource extends Resource
         return $form
             ->schema([
                 Grid::make(1)->schema([
-                    FileUpload::make('image')
+                    SpatieMediaLibraryFileUpload::make('image')
                         ->imagePreviewHeight('150')
                         ->loadingIndicatorPosition('left')
                         ->panelAspectRatio('2:1')
@@ -48,6 +50,10 @@ class CheckResource extends Resource
                         ->disk('public')
                         ->visibility('public')
                         ->directory('checks')
+                        ->rules([
+                            'mimes:png,jpg,jpeg,tiff',
+                        ])
+                        ->collection('checks')
                 ]),
                 Grid::make(2)->schema([
                     Forms\Components\TextInput::make('number')
@@ -144,7 +150,8 @@ class CheckResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('image')
+                    ->collection('checks')
                     ->label(__('checks.image'))
                     ->height('auto')
                     ->width('80px'),
@@ -225,29 +232,16 @@ class CheckResource extends Resource
                     ->label(__('general.download'))
                     ->icon('heroicon-o-download')
                     ->action(function ($record) {
-                        return Storage::disk('public')->download($record->image, Carbon::parse($record->due_date)->format('d-m-Y') . " " . $record->corporation->name);
+                        return response()->download($record->getMedia('checks')[0]->getPath(), Carbon::parse($record->due_date)->format('d-m-Y') . " " . $record->corporation->name);
                     })
-                    ->hidden(fn ($record) => !$record->image),
+                    ->hidden(fn ($record) => !$record->getMedia()),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
-                    ->after(function ($record) {
+                    ->after(function ($record, Request $request) {
                         if ($record->status != 'paid') {
                             $record->paid_date = null;
                             $record->save();
                         }
-                    })
-                    ->before(function ($record, Request $request) {
-                        if ($record->image != $request->image) {
-                            Storage::disk('public')->delete($record->image);
-                            $record->image = Storage::url($record->image);
-                        } else {
-                            if ($record->image) {
-                                Storage::disk('public')->delete($record->image);
-                                $record->image = null;
-                            }
-                        }
-
-                        $record->save();
                     }),
                 Tables\Actions\DeleteAction::make()
                     ->before(function ($record) {

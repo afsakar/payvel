@@ -86,6 +86,8 @@
     @endif
 
     {{ \Filament\Facades\Filament::renderHook('head.end') }}
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body @class([
@@ -106,7 +108,7 @@
                 x-on:dark-mode-toggled.window="mode = $event.detail">
                 <img x-show="mode === 'light'" src="{{ asset('/images/payvel.svg') }}" alt="Logo" class="h-14"
                     loading="lazy">
-                <img x-show="mode === 'dark'" src="{{ asset('/images/payvel-dark.svg') }}" alt="Logo"
+                <img x-show="mode === 'dark' || !mode" src="{{ asset('/images/payvel-dark.svg') }}" alt="Logo"
                     class="h-14" loading="lazy">
             </div>
             <form method="POST" action="{{ route('login') }}" @class([
