@@ -34,7 +34,7 @@ class Dashboard extends Page
     {
         return [
             AccountWidget::class,
-            RevenueWidget::class,
+            // RevenueWidget::class,
         ];
     }
 
