@@ -43,7 +43,6 @@ class ExpenseTable extends Component implements Tables\Contracts\HasTable
                 ->label(__('expenses.corporation')),
             Tables\Columns\TextColumn::make('amount_with_currency')
                 ->label(__('expenses.amount'))
-                ->formatStateUsing(fn ($state) => '-' . $state)
                 ->sortable(),
             Tables\Columns\BadgeColumn::make('type')
                 ->label(__('expenses.type'))

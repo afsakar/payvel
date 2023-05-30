@@ -18,12 +18,12 @@ class InvoicesWidget extends BaseWidget
     {
         $corporation = Corporation::with('revenues')->find($this->corporationID);
 
-        $invoiceTotal = Card::make(__('corporations.invoice_total'), $this->formatMoney($corporation->invoice_total));
-        $billTotal = Card::make(__('corporations.bill_total'), $this->formatMoney($corporation->bill_total));
+        $invoiceTotal = Card::make(__('corporations.bill_total'), $this->formatMoney($corporation->invoice_total));
+        $billTotal = Card::make(__('corporations.invoice_total'), $this->formatMoney($corporation->bill_total));
 
         return [
-            $billTotal,
             $invoiceTotal,
+            $billTotal,
         ];
     }
 

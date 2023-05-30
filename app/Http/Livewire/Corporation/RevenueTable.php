@@ -43,6 +43,7 @@ class RevenueTable extends Component implements Tables\Contracts\HasTable
                 ->label(__('revenues.corporation')),
             Tables\Columns\TextColumn::make('amount_with_currency')
                 ->label(__('revenues.amount'))
+                ->formatStateUsing(fn ($state) => '-' . $state)
                 ->sortable(),
             Tables\Columns\BadgeColumn::make('type')
                 ->label(__('revenues.type'))

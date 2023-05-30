@@ -3,143 +3,196 @@
 ])
 
 <!DOCTYPE html>
-<html
-    lang="{{ str_replace('_', '-', app()->getLocale()) }}"
-    dir="{{ __('filament::layout.direction') ?? 'ltr' }}"
-    class="filament js-focus-visible min-h-screen antialiased"
->
-    <head>
-        {{ \Filament\Facades\Filament::renderHook('head.start') }}
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ __('filament::layout.direction') ?? 'ltr' }}"
+    class="filament js-focus-visible min-h-screen antialiased">
 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    {{ \Filament\Facades\Filament::renderHook('head.start') }}
 
-        @foreach (\Filament\Facades\Filament::getMeta() as $tag)
-            {{ $tag }}
-        @endforeach
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        @if ($favicon = config('filament.favicon'))
-            <link rel="icon" href="{{ $favicon }}">
-        @endif
+    @foreach (\Filament\Facades\Filament::getMeta() as $tag)
+        {{ $tag }}
+    @endforeach
 
-        <title>{{ $title ? "{$title} - " : null }} {{ config('filament.brand') }}</title>
+    @if ($favicon = config('filament.favicon'))
+        <link rel="icon" href="{{ $favicon }}">
+    @endif
 
-        {{ \Filament\Facades\Filament::renderHook('styles.start') }}
+    <title>{{ $title ? "{$title} - " : null }} {{ config('filament.brand') }}</title>
 
-        <style>
-            [x-cloak=""], [x-cloak="x-cloak"], [x-cloak="1"] { display: none !important; }
-            @media (max-width: 1023px) { [x-cloak="-lg"] { display: none !important; } }
-            @media (min-width: 1024px) { [x-cloak="lg"] { display: none !important; } }
-            :root {
-                --sidebar-width: {{ config('filament.layout.sidebar.width') ?? '20rem' }};
-                --collapsed-sidebar-width: {{ config('filament.layout.sidebar.collapsed_width') ?? '5.4rem' }};
+    {{ \Filament\Facades\Filament::renderHook('styles.start') }}
+
+    <style>
+        [x-cloak=""],
+        [x-cloak="x-cloak"],
+        [x-cloak="1"] {
+            display: none !important;
+        }
+
+        @media (max-width: 1023px) {
+            [x-cloak="-lg"] {
+                display: none !important;
             }
-        </style>
+        }
 
-        @livewireStyles
+        @media (min-width: 1024px) {
+            [x-cloak="lg"] {
+                display: none !important;
+            }
+        }
 
-        @if (filled($fontsUrl = config('filament.google_fonts')))
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="{{ $fontsUrl }}" rel="stylesheet" />
-        @endif
+        :root {
+            --sidebar-width: {{ config('filament.layout.sidebar.width') ?? '20rem' }};
+            --collapsed-sidebar-width: {{ config('filament.layout.sidebar.collapsed_width') ?? '5.4rem' }};
+        }
 
-        @foreach (\Filament\Facades\Filament::getStyles() as $name => $path)
-            @if (\Illuminate\Support\Str::of($path)->startsWith(['http://', 'https://']))
-                <link rel="stylesheet" href="{{ $path }}" />
-            @elseif (\Illuminate\Support\Str::of($path)->startsWith('<'))
-                {!! $path !!}
-            @else
-                <link rel="stylesheet" href="{{ route('filament.asset', [
+        #style-1::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px theme('colors.primary.600');
+            border-radius: 10px;
+        }
+
+        #style-1::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            background-color: transparent;
+        }
+
+        #style-1::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px theme('colors.primary.600');
+            background-color: #F59E0B;
+        }
+
+        body::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px theme('colors.primary.600');
+            border-radius: 10px;
+        }
+
+        body::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            background-color: transparent;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px theme('colors.primary.600');
+            background-color: #F59E0B;
+        }
+    </style>
+
+    @livewireStyles
+
+    @if (filled($fontsUrl = config('filament.google_fonts')))
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="{{ $fontsUrl }}" rel="stylesheet" />
+    @endif
+
+    @foreach (\Filament\Facades\Filament::getStyles() as $name => $path)
+        @if (\Illuminate\Support\Str::of($path)->startsWith(['http://', 'https://']))
+            <link rel="stylesheet" href="{{ $path }}" />
+        @elseif (\Illuminate\Support\Str::of($path)->startsWith('<'))
+            {!! $path !!}
+        @else
+            <link rel="stylesheet"
+                href="{{ route('filament.asset', [
                     'file' => "{$name}.css",
                 ]) }}" />
-            @endif
-        @endforeach
-
-        {{ \Filament\Facades\Filament::getThemeLink() }}
-
-        {{ \Filament\Facades\Filament::renderHook('styles.end') }}
-
-        @if (config('filament.dark_mode'))
-            <script>
-                const theme = localStorage.getItem('theme')
-
-                if ((theme === 'dark') || (! theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    document.documentElement.classList.add('dark')
-                }
-            </script>
         @endif
+    @endforeach
 
-        {{ \Filament\Facades\Filament::renderHook('head.end') }}
-    </head>
+    {{ \Filament\Facades\Filament::getThemeLink() }}
 
-    <body @class([
-        'filament-body min-h-screen bg-gray-100 text-gray-900 overflow-y-auto',
-        'dark:text-gray-100 dark:bg-gray-900' => config('filament.dark_mode'),
-    ])>
-        {{ \Filament\Facades\Filament::renderHook('body.start') }}
+    {{ \Filament\Facades\Filament::renderHook('styles.end') }}
 
-        {{ $slot }}
-
-        {{ \Filament\Facades\Filament::renderHook('scripts.start') }}
-
-        @livewireScripts
-
+    @if (config('filament.dark_mode'))
         <script>
-            window.filamentData = @json(\Filament\Facades\Filament::getScriptData());
+            const theme = localStorage.getItem('theme')
+
+            if ((theme === 'dark') || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark')
+            }
         </script>
+    @endif
 
-        @foreach (\Filament\Facades\Filament::getBeforeCoreScripts() as $name => $path)
-            @if (\Illuminate\Support\Str::of($path)->startsWith(['http://', 'https://']))
-                <script defer src="{{ $path }}"></script>
-            @elseif (\Illuminate\Support\Str::of($path)->startsWith('<'))
-                {!! $path !!}
-            @else
-                <script defer src="{{ route('filament.asset', [
-                    'file' => "{$name}.js",
-                ]) }}"></script>
-            @endif
-        @endforeach
+    {{ \Filament\Facades\Filament::renderHook('head.end') }}
+</head>
 
-        @stack('beforeCoreScripts')
+<body @class([
+    'filament-body min-h-screen bg-gray-100 text-gray-900 overflow-y-auto',
+    'dark:text-gray-100 dark:bg-gray-900' => config('filament.dark_mode'),
+])>
+    {{ \Filament\Facades\Filament::renderHook('body.start') }}
 
-        <script defer src="{{ route('filament.asset', [
+    {{ $slot }}
+
+    {{ \Filament\Facades\Filament::renderHook('scripts.start') }}
+
+    @livewireScripts
+
+    <script>
+        window.filamentData = @json(\Filament\Facades\Filament::getScriptData());
+    </script>
+
+    @foreach (\Filament\Facades\Filament::getBeforeCoreScripts() as $name => $path)
+        @if (\Illuminate\Support\Str::of($path)->startsWith(['http://', 'https://']))
+            <script defer src="{{ $path }}"></script>
+        @elseif (\Illuminate\Support\Str::of($path)->startsWith('<'))
+            {!! $path !!}
+        @else
+            <script defer src="{{ route('filament.asset', [
+                'file' => "{$name}.js",
+            ]) }}"></script>
+        @endif
+    @endforeach
+
+    @stack('beforeCoreScripts')
+
+    <script defer
+        src="{{ route('filament.asset', [
             'id' => Filament\get_asset_id('app.js'),
             'file' => 'app.js',
-        ]) }}"></script>
+        ]) }}">
+    </script>
 
-        @if (config('filament.broadcasting.echo'))
-            <script defer src="{{ route('filament.asset', [
+    @if (config('filament.broadcasting.echo'))
+        <script defer
+            src="{{ route('filament.asset', [
                 'id' => Filament\get_asset_id('echo.js'),
                 'file' => 'echo.js',
+            ]) }}">
+        </script>
+
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                window.Echo = new window.EchoFactory(@js(config('filament.broadcasting.echo')))
+
+                window.dispatchEvent(new CustomEvent('EchoLoaded'))
+            })
+        </script>
+    @endif
+
+    @foreach (\Filament\Facades\Filament::getScripts() as $name => $path)
+        @if (\Illuminate\Support\Str::of($path)->startsWith(['http://', 'https://']))
+            <script defer src="{{ $path }}"></script>
+        @elseif (\Illuminate\Support\Str::of($path)->startsWith('<'))
+            {!! $path !!}
+        @else
+            <script defer src="{{ route('filament.asset', [
+                'file' => "{$name}.js",
             ]) }}"></script>
-
-            <script>
-                window.addEventListener('DOMContentLoaded', () => {
-                    window.Echo = new window.EchoFactory(@js(config('filament.broadcasting.echo')))
-
-                    window.dispatchEvent(new CustomEvent('EchoLoaded'))
-                })
-            </script>
         @endif
+    @endforeach
 
-        @foreach (\Filament\Facades\Filament::getScripts() as $name => $path)
-            @if (\Illuminate\Support\Str::of($path)->startsWith(['http://', 'https://']))
-                <script defer src="{{ $path }}"></script>
-            @elseif (\Illuminate\Support\Str::of($path)->startsWith('<'))
-                {!! $path !!}
-            @else
-                <script defer src="{{ route('filament.asset', [
-                    'file' => "{$name}.js",
-                ]) }}"></script>
-            @endif
-        @endforeach
+    @stack('scripts')
 
-        @stack('scripts')
+    {{ \Filament\Facades\Filament::renderHook('scripts.end') }}
 
-        {{ \Filament\Facades\Filament::renderHook('scripts.end') }}
+    {{ \Filament\Facades\Filament::renderHook('body.end') }}
+</body>
 
-        {{ \Filament\Facades\Filament::renderHook('body.end') }}
-    </body>
 </html>

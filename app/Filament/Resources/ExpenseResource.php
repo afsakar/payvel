@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
-
+use Filament\Tables\Filters\Filter;
 
 class ExpenseResource extends Resource
 {
@@ -145,7 +145,17 @@ class ExpenseResource extends Resource
             ->filters([
                 //
                 \Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter::make('due_at')
-                    ->label(__('expenses.due_at'))
+                    ->label(__('expenses.due_at')),
+                Filter::make('currency_id')
+                    ->label(__('currencies.currency'))
+                    ->form([
+                        Forms\Components\Select::make('currency_id')
+                            ->label(__('currencies.currency'))
+                            ->options(\App\Models\Currency::all()->pluck('name', 'id'))
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when($data['currency_id'], fn ($query, $currency_id) => $query->whereHas('corporation', fn ($query) => $query->where('currency_id', $currency_id)));
+                    }),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

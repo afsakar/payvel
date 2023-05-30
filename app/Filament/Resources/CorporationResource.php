@@ -31,7 +31,7 @@ class CorporationResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('currency_id')
-                    ->label(__('corporations.currency'))
+                    ->label(__('accounts.balance'))
                     ->options(Currency::all()->pluck('name', 'id'))
                     ->searchable()
                     ->required(),
