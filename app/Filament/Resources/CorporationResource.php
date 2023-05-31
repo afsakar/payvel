@@ -86,7 +86,7 @@ class CorporationResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('total')
                     ->formatStateUsing(fn ($record, $state) => $record->currency->position == 'left' ? $record->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->currency->symbol)
-                    ->label(__('corporations.currency')),
+                    ->label(__('accounts.balance')),
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('corporations.corporation_name'))
                     ->searchable(),
