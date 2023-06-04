@@ -234,7 +234,7 @@ class CheckResource extends Resource
                     ->action(function ($record) {
                         return response()->download($record->getMedia('checks')[0]->getPath(), Carbon::parse($record->due_date)->format('d-m-Y') . " " . $record->corporation->name);
                     })
-                    ->hidden(fn ($record) => !$record->getMedia()),
+                    ->hidden(fn ($record) => !$record->getMedia() || !$record->getMedia('checks')->count()),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
                     ->after(function ($record, Request $request) {
