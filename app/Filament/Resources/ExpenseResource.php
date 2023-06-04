@@ -182,7 +182,7 @@ class ExpenseResource extends Resource
                             'Content-Type' => $record->getMedia('expenses')[0]->mime_type,
                         ]);
                     })
-                    ->hidden(fn ($record) => !$record->getMedia()),
+                    ->hidden(fn ($record) => !$record->getMedia() || !$record->getMedia('expenses')->count()),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()

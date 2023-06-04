@@ -287,7 +287,7 @@ class BillResource extends Resource
                             'Content-Type' => $record->getMedia('bills')[0]->mime_type,
                         ]);
                     })
-                    ->hidden(fn ($record) => !$record->getMedia()),
+                    ->hidden(fn ($record) => !$record->getMedia() || !$record->getMedia('bills')->count()),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
