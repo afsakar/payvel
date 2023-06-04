@@ -23,6 +23,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 
@@ -40,6 +41,21 @@ class InvoiceResource extends Resource
     {
         return $form
             ->schema([
+                Card::make()->columns(2)->schema([
+                    Grid::make(1)->schema([
+                        SpatieMediaLibraryFileUpload::make('file')
+                            ->label(__('general.file'))
+                            ->maxSize(10240)
+                            ->nullable()
+                            ->disk('public')
+                            ->visibility('public')
+                            ->directory('invoices')
+                            ->rules([
+                                'mimes:pdf,png,jpg,jpeg,tiff',
+                            ])
+                            ->collection('invoices')
+                    ]),
+                ]),
                 Card::make()->columns(2)->schema([
                     Forms\Components\TextInput::make('number')
                         ->label(__('invoices.invoice_number'))
@@ -263,6 +279,15 @@ class InvoiceResource extends Resource
                     ->label(__('invoices.issue_date'))
             ])
             ->actions([
+                Tables\Actions\Action::make('download')
+                    ->label(__('general.download'))
+                    ->icon('heroicon-o-download')
+                    ->action(function ($record) {
+                        return response()->download($record->getMedia('invoices')[0]->getPath(), $record->number . " " . $record->corporation->name, [
+                            'Content-Type' => $record->getMedia('invoices')[0]->mime_type,
+                        ]);
+                    })
+                    ->hidden(fn ($record) => !$record->getMedia()),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])

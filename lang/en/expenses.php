@@ -18,4 +18,5 @@ return [
     "bill_number" => "Bill Number",
     "formal" => "Formal",
     "informal" => "Informal",
+    "has_file" => "Has File?",
 ];

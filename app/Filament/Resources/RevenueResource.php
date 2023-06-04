@@ -26,6 +26,7 @@ use Illuminate\Routing\Route;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class RevenueResource extends Resource
@@ -104,6 +105,21 @@ class RevenueResource extends Resource
                         ->rows(2)
                         ->required()
                         ->maxLength(65535),
+                    SpatieMediaLibraryFileUpload::make('image')
+                        ->imagePreviewHeight('150')
+                        ->loadingIndicatorPosition('left')
+                        ->panelAspectRatio('2:1')
+                        ->panelLayout('integrated')
+                        ->label(__('general.file'))
+                        ->maxSize(10240)
+                        ->nullable()
+                        ->disk('public')
+                        ->visibility('public')
+                        ->directory('revenues')
+                        ->rules([
+                            'mimes:pdf,png,jpg,jpeg,tiff',
+                        ])
+                        ->collection('revenues')
                 ]),
             ]);
     }
@@ -165,6 +181,15 @@ class RevenueResource extends Resource
                     }),
             ])
             ->actions([
+                Tables\Actions\Action::make('download')
+                    ->label(__('general.download'))
+                    ->icon('heroicon-o-download')
+                    ->action(function ($record) {
+                        return response()->download($record->getMedia('revenues')[0]->getPath(), __('general.file'), [
+                            'Content-Type' => $record->getMedia('revenues')[0]->mime_type,
+                        ]);
+                    })
+                    ->hidden(fn ($record) => !$record->getMedia()),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()

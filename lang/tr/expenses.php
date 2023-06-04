@@ -18,4 +18,5 @@ return [
     "bill_number" => "Fatura Numarası",
     "formal" => "Resmi",
     "informal" => "Gayri Resmi",
+    "has_file" => "Dosya Var Mı?",
 ];

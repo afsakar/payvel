@@ -16,7 +16,14 @@ class EditWaybill extends EditRecord
             Actions\ViewAction::make(),
             Actions\DeleteAction::make()
                 ->hidden(fn ($record) => $record->has_any_relation),
-            Actions\ForceDeleteAction::make(),
+            Actions\ForceDeleteAction::make()
+                ->before(function ($record) {
+                    if ($record->items && $record->items->count() > 0) {
+                        foreach ($record->items as $item) {
+                            $item->delete();
+                        }
+                    }
+                }),
             Actions\RestoreAction::make(),
             Actions\Action::make('back')
                 ->label(__('general.go_back'))

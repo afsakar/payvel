@@ -18,4 +18,6 @@ return [
     "settings" => "Ayarlar",
     "download" => "İndir",
     "page_orientation" => "Sayfa Yönü",
+    "image" => "Görsel",
+    "file" => "Dosya",
 ];

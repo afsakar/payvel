@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Waybill extends Model
+class Waybill extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
     protected $fillable = [
         'company_id',
@@ -57,6 +59,6 @@ class Waybill extends Model
 
     public function getHasAnyRelationAttribute()
     {
-        return $this->items()->count() > 0 || $this->invoices()->count() > 0 || $this->bills()->count() > 0;
+        return $this->invoices()->count() > 0 || $this->bills()->count() > 0;
     }
 }

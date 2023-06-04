@@ -21,7 +21,9 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
+use Carbon\Carbon;
 
 class BillResource extends Resource
 {
@@ -37,6 +39,21 @@ class BillResource extends Resource
     {
         return $form
             ->schema([
+                Card::make()->columns(2)->schema([
+                    Grid::make(1)->schema([
+                        SpatieMediaLibraryFileUpload::make('file')
+                            ->label(__('general.file'))
+                            ->maxSize(10240)
+                            ->nullable()
+                            ->disk('public')
+                            ->visibility('public')
+                            ->directory('bills')
+                            ->rules([
+                                'mimes:pdf,png,jpg,jpeg,tiff',
+                            ])
+                            ->collection('bills')
+                    ]),
+                ]),
                 Card::make()->columns(2)->schema([
                     Forms\Components\TextInput::make('number')
                         ->label(__('bills.bill_number'))
@@ -262,6 +279,15 @@ class BillResource extends Resource
                     ->label(__('bills.issue_date'))
             ])
             ->actions([
+                Tables\Actions\Action::make('download')
+                    ->label(__('general.download'))
+                    ->icon('heroicon-o-download')
+                    ->action(function ($record) {
+                        return response()->download($record->getMedia('bills')[0]->getPath(), $record->number . " " . $record->corporation->name, [
+                            'Content-Type' => $record->getMedia('bills')[0]->mime_type,
+                        ]);
+                    })
+                    ->hidden(fn ($record) => !$record->getMedia()),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])

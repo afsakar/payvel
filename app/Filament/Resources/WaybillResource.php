@@ -18,6 +18,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class WaybillResource extends Resource
@@ -32,6 +33,21 @@ class WaybillResource extends Resource
     {
         return $form
             ->schema([
+                Card::make()->columns(2)->schema([
+                    Grid::make(1)->schema([
+                        SpatieMediaLibraryFileUpload::make('file')
+                            ->label(__('general.file'))
+                            ->maxSize(10240)
+                            ->nullable()
+                            ->disk('public')
+                            ->visibility('public')
+                            ->directory('waybills')
+                            ->rules([
+                                'mimes:pdf,png,jpg,jpeg,tiff',
+                            ])
+                            ->collection('waybills')
+                    ]),
+                ]),
                 Card::make()->columns(2)->schema([
                     Forms\Components\Select::make('company_id')
                         ->label(__('waybills.company'))
@@ -167,6 +183,15 @@ class WaybillResource extends Resource
                     ->label(__('waybills.due_date'))
             ])
             ->actions([
+                Tables\Actions\Action::make('download')
+                    ->label(__('general.download'))
+                    ->icon('heroicon-o-download')
+                    ->action(function ($record) {
+                        return response()->download($record->getMedia('waybills')[0]->getPath(), $record->number . " " . $record->corporation->name, [
+                            'Content-Type' => $record->getMedia('waybills')[0]->mime_type,
+                        ]);
+                    })
+                    ->hidden(fn ($record) => !$record->getMedia()),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])

@@ -18,4 +18,6 @@ return [
     "settings" => "Settings",
     "download" => "Download",
     "page_orientation" => "Page Orientation",
+    "image" => "Image",
+    "file" => "File",
 ];
