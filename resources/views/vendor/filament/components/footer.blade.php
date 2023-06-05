@@ -19,6 +19,16 @@
         </a>
     @endif
 
+    <div class="text-center text-gray-500">
+        <div>
+            <span>Made with <span class="text-red-500">❤</span> by</span>
+            <a href="https://afsakar.dev" class="hover:text-gray-700 transition duration-150 ease-in-out" target="_blank">
+                <span class="font-semibold">Azad Furkan ŞAKAR</span>
+            </a>
+        </div>
+        <span>{{ config('app.name') }} &copy; {{ date('Y') }}</span>
+    </div>
+
     {{ \Filament\Facades\Filament::renderHook('footer.end') }}
 </div>
 

@@ -4,14 +4,14 @@
 
 -   Add transaction (DONE)
 
--   Add widgets to the dashboard
+-   Add widgets to the dashboard (Maybe in next version)
 
--   Add agreement extract
+-   Add agreement extract (DONE)
 
--   Group navigation menu
+-   Group navigation menu (DONE)
 
--   Add company extract
+-   Add company extract (DONE)
 
--   Add corporaiton extract
+-   Add corporaiton extract (DONE)
 
--   Add account extract
+-   Add account extract (DONE)
