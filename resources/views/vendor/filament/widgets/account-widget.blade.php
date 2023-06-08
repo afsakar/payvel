@@ -29,13 +29,8 @@
                 </div>
             </div>
             <div class="flex items-center justify-end gap-2">
-                @if ($company->logo != null || $company->logo != '')
-                    <div class="hidden md:block">
-                        <img src="{{ asset('storage/' . $company->logo) }}" class="h-12" loading="lazy">
-                    </div>
-                @endif
                 <div class="text-right">
-                    <div class="text-sm text-gray-5600 dark:text-gray-300">
+                    <div class="text-sm text-gray-600 dark:text-gray-300">
                         {{ __('general.selected_company') }}
                     </div>
                     <h2 class="text-lg sm:text-xl font-bold tracking-tight">
