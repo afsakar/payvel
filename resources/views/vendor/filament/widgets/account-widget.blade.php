@@ -10,8 +10,6 @@
 
         <div class="flex items-center justify-between">
             <div class="h-12 flex items-center justify-between space-x-4 rtl:space-x-reverse">
-                <x-filament::user-avatar :user="$user" />
-
                 <div>
                     <h2 class="text-lg sm:text-xl font-bold tracking-tight">
                         {{ __('filament::widgets/account-widget.welcome', ['user' => \Filament\Facades\Filament::getUserName($user)]) }}
@@ -30,13 +28,20 @@
                     </form>
                 </div>
             </div>
-            <div class="text-right">
-                <div class="font-xs text-gray-5600 dark:text-gray-300">
-                    {{ __('general.selected_company') }}
+            <div class="flex items-center justify-end gap-2">
+                @if ($company->logo != null || $company->logo != '')
+                    <div class="hidden md:block">
+                        <img src="{{ asset('storage/' . $company->logo) }}" class="h-12" loading="lazy">
+                    </div>
+                @endif
+                <div class="text-right">
+                    <div class="text-sm text-gray-5600 dark:text-gray-300">
+                        {{ __('general.selected_company') }}
+                    </div>
+                    <h2 class="text-lg sm:text-xl font-bold tracking-tight">
+                        {{ $company->name }}
+                    </h2>
                 </div>
-                <h2 class="text-lg sm:text-xl font-bold tracking-tight">
-                    {{ $company->name }}
-                </h2>
             </div>
         </div>
     </x-filament::card>
