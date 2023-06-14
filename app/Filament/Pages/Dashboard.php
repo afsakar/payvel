@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Resources\RevenueResource\Widgets\RevenueWidget;
-use App\Filament\Widgets\CalendarWidget;
 use Closure;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
@@ -35,7 +34,6 @@ class Dashboard extends Page
     {
         return [
             AccountWidget::class,
-            CalendarWidget::class,
             // RevenueWidget::class,
         ];
     }

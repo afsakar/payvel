@@ -6,7 +6,6 @@ use App\Filament\Resources\CheckResource\Pages;
 use App\Filament\Resources\CheckResource\RelationManagers;
 use App\Models\Account;
 use App\Models\Check;
-use App\Models\Event;
 use Carbon\Carbon;
 use Closure;
 use Filament\Forms;
@@ -190,7 +189,7 @@ class CheckResource extends Resource
                     ->sortable()
                     ->label(__('checks.number')),
                 Tables\Columns\TextColumn::make('amount')
-                    ->formatStateUsing(fn($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol)
+                    ->formatStateUsing(fn ($record, $state) => $record->corporation->currency->position == 'left' ? $record->corporation->currency->symbol . number_format($state, 2) : number_format($state, 2) . $record->corporation->currency->symbol)
                     ->label(__('checks.amount')),
                 Tables\Columns\TextColumn::make('account.name')
                     ->label(__('checks.account')),
@@ -220,11 +219,11 @@ class CheckResource extends Resource
                         return $query
                             ->when(
                                 $data['min_amount'],
-                                fn(Builder $query, $amount): Builder => $query->where('amount', '>=', $amount),
+                                fn (Builder $query, $amount): Builder => $query->where('amount', '>=', $amount),
                             )
                             ->when(
                                 $data['max_amount'],
-                                fn(Builder $query, $amount): Builder => $query->where('amount', '<=', $amount),
+                                fn (Builder $query, $amount): Builder => $query->where('amount', '<=', $amount),
                             );
                     }),
             ])
@@ -235,7 +234,7 @@ class CheckResource extends Resource
                     ->action(function ($record) {
                         return response()->download($record->getMedia('checks')[0]->getPath(), Carbon::parse($record->due_date)->format('d-m-Y') . " " . $record->corporation->name);
                     })
-                    ->hidden(fn($record) => !$record->getMedia() || !$record->getMedia('checks')->count()),
+                    ->hidden(fn ($record) => !$record->getMedia() || !$record->getMedia('checks')->count()),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
                     ->after(function ($record, Request $request) {
@@ -246,16 +245,10 @@ class CheckResource extends Resource
                     }),
                 Tables\Actions\DeleteAction::make()
                     ->before(function ($record) {
-                        $event = Event::where('check_id', $record->id)->first();
-
                         if ($record->image != null) {
                             Storage::disk('public')->delete($record->image);
                         }
-
-                        if ($event) {
-                            $event->delete();
-                        }
-                    })
+                    }),
             ])
             ->bulkActions([
                 FilamentExportBulkAction::make('export')
