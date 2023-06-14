@@ -20,6 +20,7 @@
         "livewire/livewire": "^2.12",
         "malzariey/filament-daterangepicker-filter": "^1.2",
         "marjose123/filament-lockscreen": "^1.1",
+        "saade/filament-fullcalendar": "^1.7",
         "webbingbrasil/filament-datefilter": "^1.1"
     },
     "require-dev": {
