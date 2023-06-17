@@ -20,4 +20,6 @@ return [
     "page_orientation" => "Sayfa Yönü",
     "image" => "Görsel",
     "file" => "Dosya",
+    "save" => "Kaydet",
+    "saved" => "Kaydedildi",
 ];

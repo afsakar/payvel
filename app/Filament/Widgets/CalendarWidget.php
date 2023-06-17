@@ -24,6 +24,13 @@ class CalendarWidget extends FullCalendarWidget
      */
     public function getViewData(): array
     {
-        return Event::select('id', 'title', 'description', 'start', 'end', 'reminder')->get()->toArray();
+        $events = Event::select('id', 'title', 'description', 'start', 'end', 'reminder')->get()->toArray();
+
+        foreach ($events as $key => $event) {
+            $events[$key]['color'] = '#f59e0b';
+            $events[$key]['backgroundColor'] = '#000000';
+        }
+
+        return $events;
     }
 }

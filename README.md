@@ -65,6 +65,8 @@ The PayVel is open-sourced software licensed under the [MIT license](https://ope
 
 ## Credits
 
+- [Filament](https://filamentphp.com)
+- [Laravel](https://laravel.com)
 - [Azad Furkan ŞAKAR](https://github.com/afsakar)
 
 ## Support

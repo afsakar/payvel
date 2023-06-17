@@ -13,10 +13,10 @@
 <x-filament::dropdown placement="bottom-end">
     <x-slot name="trigger" class="ml-4 rtl:mr-4 rtl:ml-0">
         <button class="block" aria-label="{{ __('filament::layout.buttons.user_menu.label') }}">
-            <x-filament::user-avatar :user="$user" />
+            <x-filament::user-avatar :user="$user"/>
         </button>
     </x-slot>
-    
+
     {{ \Filament\Facades\Filament::renderHook('user-menu.account.before') }}
 
     <x-filament::dropdown.header
@@ -25,9 +25,9 @@
         :href="$accountItemUrl"
         :tag="filled($accountItemUrl) ? 'a' : 'div'"
     >
-        {{ $accountItem?->getLabel() ?? \Filament\Facades\Filament::getUserName($user) }}
+        <a href="{{route('filament.pages.profile')}}">{{ $accountItem?->getLabel() ?? \Filament\Facades\Filament::getUserName($user) }}</a>
     </x-filament::dropdown.header>
-    
+
     {{ \Filament\Facades\Filament::renderHook('user-menu.account.after') }}
 
     <x-filament::dropdown.list
@@ -76,11 +76,13 @@
     >
         <div>
             @if (config('filament.dark_mode'))
-                <x-filament::dropdown.list.item icon="heroicon-s-moon" x-show="theme === 'dark'" x-on:click="close(); mode = 'manual'; theme = 'light'">
+                <x-filament::dropdown.list.item icon="heroicon-s-moon" x-show="theme === 'dark'"
+                                                x-on:click="close(); mode = 'manual'; theme = 'light'">
                     {{ __('filament::layout.buttons.light_mode.label') }}
                 </x-filament::dropdown.list.item>
 
-                <x-filament::dropdown.list.item icon="heroicon-s-sun" x-show="theme === 'light'" x-on:click="close(); mode = 'manual'; theme = 'dark'">
+                <x-filament::dropdown.list.item icon="heroicon-s-sun" x-show="theme === 'light'"
+                                                x-on:click="close(); mode = 'manual'; theme = 'dark'">
                     {{ __('filament::layout.buttons.dark_mode.label') }}
                 </x-filament::dropdown.list.item>
             @endif

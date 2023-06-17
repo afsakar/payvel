@@ -20,4 +20,6 @@ return [
     "page_orientation" => "Page Orientation",
     "image" => "Image",
     "file" => "File",
+    "save" => "Save",
+    "saved" => "Saved",
 ];
