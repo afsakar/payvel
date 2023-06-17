@@ -1,4 +1,4 @@
-# <center><img src="public/images/payvel-dark.svg" width="200" /></center>
+# <p align="center"><img src="public/images/payvel-dark.svg" width="200" /></p>
 
 **PayVel** is a pre-accounting program made with FilamentPHP. With PayVel, you can keep account of account management, payments you make or receive against companies. It is suitable for all kinds of small and medium-sized businesses.
 
@@ -78,3 +78,7 @@ If you need support, please email me at [info@afsakar.com](mailto:info@afsakar.c
 If you liked this project, you can donate to support it.
 
 <a href="https://www.buymeacoffee.com/afsakar" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 156px !important;" ></a>
+
+Daha önceden Codeigniter ile yapmış olduğum CodePay uygulamasını Laravel ile üstüne koyarak geliştirdiğim PayVel uygulamasını tamamladım. PayVel ile müşteri ve tedarikçi yönetimi, fatura yönetimi, ödeme yönetimi, gider yönetimi yapabilirsiniz. Küçük ve orta ölçekli işletmeler için uygun.
+
+Açıkçası bundan önce aynı uygulamayı SPA+REST API olarak geliştirmeye başlamıştım. Ancak zamanımın kısıtlı olması ve biraz da bu konuda sabırsız olmam sebebiyle FilamentPHP'yi de bir deneyeyim derken bu uygulamayı geliştirmeye başladım. FilamentPHP ile geliştirmek oldukça keyifliydi. Özellikle de CRUD işlemlerini yaparken.

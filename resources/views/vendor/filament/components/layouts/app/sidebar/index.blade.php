@@ -74,7 +74,7 @@
 
         @php
             $navigation = \Filament\Facades\Filament::getNavigation();
-            
+
             $collapsedNavigationGroupLabels = collect($navigation)
                 ->filter(fn(\Filament\Navigation\NavigationGroup $group): bool => $group->isCollapsed())
                 ->map(fn(\Filament\Navigation\NavigationGroup $group): string => $group->getLabel())
@@ -110,5 +110,6 @@
         {{ \Filament\Facades\Filament::renderHook('sidebar.end') }}
     </nav>
 
+    <x-filament::layouts.app.sidebar.github-logo />
     <x-filament::layouts.app.sidebar.footer />
 </aside>
