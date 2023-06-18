@@ -10,6 +10,12 @@
 -   NodeJS
 -   Apache or Nginx
 
+## Demo
+
+-   [Demo](https://payvel.afsakar.com)
+-   **Email**: superadmin@example.com 
+-   **Password**: password
+
 ## Installation
 
 ```bash
