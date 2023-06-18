@@ -103,7 +103,7 @@ class InvoiceResource extends Resource
                         ->nullable(),
                     Forms\Components\Select::make('with_holding_id')
                         ->label(__('invoices.withholding_tax'))
-                        ->options(\App\Models\Withholding::all()->pluck('name', 'id', 'rate'))
+                        ->options(\App\Models\WithHolding::all()->pluck('name', 'id', 'rate'))
                         ->searchable()
                         ->required(),
                     Forms\Components\Select::make('status')
