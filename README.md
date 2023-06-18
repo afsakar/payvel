@@ -32,6 +32,8 @@ php artisan migrate:fresh --seed
 START THE SERVER
 npm run dev
 php artisan serve
+
+Change canAccessFilament method to true in User Model.
 ```
 
 ## Features

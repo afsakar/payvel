@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'path' => env('FILAMENT_PATH', 'admin'),
+    'path' => env('FILAMENT_PATH'),
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'home_url' => '/admin',
+    'home_url' => '/',
 
     /*
     |--------------------------------------------------------------------------
@@ -321,7 +321,8 @@ return [
     'middleware' => [
         'auth' => [
             Authenticate::class,
-            Locker::class
+            Locker::class,
+            CompanyCheck::class,
         ],
         'base' => [
             EncryptCookies::class,
@@ -333,7 +334,6 @@ return [
             SubstituteBindings::class,
             DispatchServingFilamentEvent::class,
             MirrorConfigToSubpackages::class,
-            CompanyCheck::class,
             \Kenepa\TranslationManager\Http\Middleware\SetLanguage::class,
         ],
     ],
