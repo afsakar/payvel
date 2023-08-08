@@ -290,4 +290,9 @@ class CheckResource extends Resource
             'index' => Pages\ManageChecks::route('/'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('company_id', session()->get('company_id'));
+    }
 }
