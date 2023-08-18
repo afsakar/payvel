@@ -18,4 +18,5 @@ return [
     "material" => "Material",
     "quantity" => "Quantity",
     "price" => "Price",
+    "items" => "Items",
 ];

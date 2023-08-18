@@ -18,4 +18,5 @@ return [
     "material" => "Malzeme",
     "quantity" => "Miktar",
     "price" => "Fiyat",
+    "items" => "Ürünler",
 ];
